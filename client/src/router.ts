@@ -1,0 +1,44 @@
+import { createRouter, createWebHistory } from 'vue-router'
+import { routeNames } from './common/constants'
+
+const routes = [
+
+    {
+        path: '/',
+        name: routeNames.login,
+        component: () => import('./__temp__/Login.vue'),
+    },
+
+    {
+        path: '/home',
+        name: routeNames.home,
+        component: () => import('./__temp__/Home.vue'),
+    },
+
+    {
+        path: '/dashboard',
+        name: routeNames.dashboard,
+        component: () => import('./dashboard/Dashboard.vue'),
+    },
+
+    {
+        path: '/purchasing/canvass',
+        name: routeNames.purchasing_canvass,
+        component: () => import('./purchasing/Canvass.vue'),
+    },
+
+    {
+        path: '/purchasing/canvass/form',
+        name: routeNames.purchasing_canvass_form,
+        component: () => import('./purchasing/CanvassForm.vue'),
+    },
+
+]
+
+
+const router = createRouter({
+  history: createWebHistory(import.meta.env.VITE_BASE_URL),
+  routes
+})
+
+export default router
