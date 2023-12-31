@@ -6,3 +6,8 @@ export function convertMiddleNameToInitial(middleName: string) {
       return "";
     }
   }
+
+
+  export function getFullname(firstname: string, middlename: string, lastname: string){
+    return lastname + ', ' + firstname + ' ' + convertMiddleNameToInitial(middlename)
+  }

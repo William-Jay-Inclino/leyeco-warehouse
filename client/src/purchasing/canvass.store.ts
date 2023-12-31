@@ -6,6 +6,8 @@ import { ICanvass } from './entities'
 import { IBrand, IEmployee, IUnit } from '../common/entities'
 import moment from 'moment'
 import { convertMiddleNameToInitial } from '../common'
+import { canvassService } from './canvass.service'
+import { IItem } from '../common/entities/item.entity'
 
 export const canvassStore = defineStore('canvass', () => {
 
@@ -75,23 +77,52 @@ export const canvassStore = defineStore('canvass', () => {
     //     _barts.value = items
     // }
 
-    // const setFormData = (payload: {data: IBART}) => {
-    //     console.log(_store + 'setFormData()', payload)
-    //     formData.value = payload.data
-    // }
+    const setFormData = (payload: {data: ICanvass}) => {
+        console.log(_store + 'setFormData()', payload)
+
+        const items = payload.data.items.map(i => {
+            const x = {} as ICanvassItemDto
+            x.brand = i.brand
+            x.description = i.description
+            x.id = i.id
+            x.quantity = i.quantity
+            x.unit = i.unit
+            return x
+        }) 
+
+        formData.value = {
+            id: payload.data.id,
+            date_requested: payload.data.date_requested,
+            purpose: payload.data.purpose,
+            notes: payload.data.purpose,
+            requested_by: payload.data.requested_by,
+            noted_by: payload.data.noted_by,
+            items: items
+        }
+    }
 
     // // methods
 
-    // const initUpdateFormData = async(id: string) => {
-    //     console.log(_store + 'initUpdateFormData()', id)
-    //     const itemFound = await bartService.findOne(id)
-    //     if(itemFound){
-    //         setFormData({data: itemFound})
-    //     }
-    // }
+    const initUpdateFormData = async(id: string) => {
+        console.log(_store + 'initUpdateFormData()', id)
+        // const itemFound = await bartService.findOne(id)
+        const itemFound = _items.value.find(i => i.id === id)
+        if(itemFound){
+            setFormData({data: itemFound})
+        }
+    }
 
     const onCreate = async(payload: {data: ICreateCanvassDto}): Promise<ICanvass | null> => {
         console.log(_store + 'onCreate()', payload)
+
+        const created = await canvassService.create(payload)
+        console.log('created', created)
+        if(created){
+            console.log('Successfully created')
+            _items.value.unshift(created)
+            return created
+        }
+
         return null
     }
 
@@ -111,32 +142,33 @@ export const canvassStore = defineStore('canvass', () => {
         formData.value.items.splice(payload.indx, 1)
     }
 
-    // const onDelete = async(id: string): Promise<boolean> => {
-    //     console.log(_store + 'onDelete()', id)
+    const onDelete = async(id: string): Promise<boolean> => {
+        console.log(_store + 'onDelete()', id)
 
-    //     const indx = _barts.value.findIndex(i => i.id === id)
+        const indx = _items.value.findIndex(i => i.id === id)
 
-    //     if(indx === -1){
-    //         console.error('Item not found')
-    //         return false 
-    //     }
+        if(indx === -1){
+            console.error('Item not found')
+            return false 
+        }
 
-    //     const deleted = await bartService.remove(id)
+        const deleted = await canvassService.remove(id)
 
-    //     if(deleted){
-    //         _barts.value.splice(indx, 1)
-    //         return true
-    //     }
+        if(deleted){
+            _items.value.splice(indx, 1)
+            return true
+        }
 
-    //     return false 
+        return false 
 
-    // }
+    }
 
-    // const resetFormData = () => {
-    //     console.log(_store + 'resetForm()')
-    //     formData.value = {..._formDataInitial}
-    //     formErrors.value = {..._formErrorsInitial}
-    // }
+    const resetFormData = () => {
+        console.log(_store + 'resetForm()')
+        formData.value = {..._formDataInitial}
+        formData.value.items = []
+        formErrors.value = {..._formErrorsInitial}
+    }
 
     return {
         items,
@@ -154,10 +186,10 @@ export const canvassStore = defineStore('canvass', () => {
         setBrands,
         setEmployees,
         // onSubmit,
-        // onDelete,
-        // resetFormData,
+        onDelete,
+        resetFormData,
         // setFormData,
-        // initUpdateFormData,
+        initUpdateFormData,
     }
 })
 

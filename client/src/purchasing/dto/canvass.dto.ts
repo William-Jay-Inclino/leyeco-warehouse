@@ -11,7 +11,7 @@ export interface IFormData{
 }
 
 export interface ICreateCanvassDto {
-    date_requested: Date
+    date_requested: string
     purpose: string
     notes: string
     requested_by: IEmployee | null
@@ -29,6 +29,7 @@ export interface IUpdateCanvassDto{
 }
 
 export interface ICanvassItemDto {
+    id: string
     description: string
     brand: IBrand | null
     unit: IUnit | null

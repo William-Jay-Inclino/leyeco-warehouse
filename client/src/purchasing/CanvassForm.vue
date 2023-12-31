@@ -41,28 +41,28 @@
                             <div class="card-body">
                                 <div class="form-group">
                                     <label>Date</label>
-                                    <input type="date" class="form-control" v-model="$canvass.formData.date_requested">
+                                    <input type="date" class="form-control" v-model="$module.formData.date_requested">
                                     <!-- <small class="form-text text-danger"> {{ errorMsg }} </small> -->
                                 </div>
                                 <div class="form-group">
                                     <label>Requested By</label>
-                                    <v-select :options="$canvass.employees" v-model="$canvass.formData.requested_by"></v-select>
+                                    <v-select :options="$module.employees" v-model="$module.formData.requested_by"></v-select>
                                     <!-- <small class="form-text text-danger"> {{ errorMsg }} </small> -->
                                 </div>
                                 <div class="form-group">
                                     <label>Noted By</label>
-                                    <v-select :options="$canvass.employees" v-model="$canvass.formData.noted_by"></v-select>
+                                    <v-select :options="$module.employees" v-model="$module.formData.noted_by"></v-select>
                                     <!-- <small class="form-text text-danger"> {{ errorMsg }} </small> -->
                                 </div>
                                 <div class="form-group">
                                     <label>Purpose</label>
-                                    <textarea class="form-control" rows="3"></textarea>
+                                    <textarea class="form-control" rows="3" v-model="$module.formData.purpose"></textarea>
                                     <!-- <small class="form-text text-danger" > {{ errorMsg }} </small> -->
                                     <!-- <small class="text-muted">optional</small> -->
                                 </div>
                                 <div class="form-group">
                                     <label>Notes</label>
-                                    <textarea class="form-control" rows="3"></textarea>
+                                    <textarea class="form-control" rows="3" v-model="$module.formData.notes"></textarea>
                                     <!-- <small class="form-text text-danger" > {{ errorMsg }} </small> -->
                                     <!-- <small class="text-muted">optional</small> -->
                                 </div>
@@ -98,7 +98,7 @@
                                             </th>
                                         </thead>
                                         <tbody>
-                                            <tr v-for="item, i in $canvass.formData.items">
+                                            <tr v-for="item, i in $module.formData.items">
                                                 <td> {{ i + 1 }}. </td>
                                                 <td>
                                                     <textarea class="form-control" rows="3" v-model="item.description"></textarea>
@@ -106,14 +106,14 @@
                                                 <td>
                                                     <select class="form-control" v-model="item.brand">
                                                         <option value="null">n/a</option>
-                                                        <option :value="i" :key="i.id" v-for="i in $canvass.brands">
+                                                        <option :value="i" :key="i.id" v-for="i in $module.brands">
                                                             {{ i.name }}
                                                         </option>
                                                     </select>
                                                 </td>
                                                 <td>
                                                     <select class="form-control" v-model="item.unit">
-                                                        <option :value="i" :key="i.id" v-for="i in $canvass.units">
+                                                        <option :value="i" :key="i.id" v-for="i in $module.units">
                                                             {{ i.name }}
                                                         </option>
                                                     </select>
@@ -122,7 +122,7 @@
                                                     <input type="number" class="form-control" v-model="item.quantity">
                                                 </td>
                                                 <td>
-                                                    <button @click="$canvass.onRemoveItem({indx: i})" class="btn btn-light">
+                                                    <button @click="$module.onRemoveItem({indx: i})" class="btn btn-light">
                                                         <i class="fas fa-fw fa-trash text-danger"></i> 
                                                     </button>
                                                 </td>
@@ -150,7 +150,7 @@
 
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import { onBeforeRouteLeave, useRouter } from 'vue-router';
 import Breadcrumbs from '../common/components/Breadcrumbs.vue'
 import { useToast } from "vue-toastification";
@@ -161,15 +161,15 @@ import { canvassStore } from './canvass.store';
 
 const toast = useToast();
 const router = useRouter()
-const $canvass = canvassStore()
+const $module = canvassStore()
 
 const _units = mock.units
 const _brands = mock.brands 
 const _employees = mock.employees
 
-$canvass.setUnits(_units)
-$canvass.setBrands(_brands)
-$canvass.setEmployees(_employees)
+$module.setUnits(_units)
+$module.setBrands(_brands)
+$module.setEmployees(_employees)
 
 const moduleLabel = 'Canvass'
 // const errorMsg = ref('This field is required')
@@ -191,25 +191,34 @@ onBeforeRouteLeave( (to: any, from: any, next: any) => {
     console.log('onBeforeRouteLeave()')
     console.log({to})
     console.log({from})
-    // $module.resetFormData()
+    $module.resetFormData()
 
     next()
+})
+
+onMounted( async() => {
+    const query = router.currentRoute.value.query
+
+    if(query.id){
+        // intialize update form / populate form 
+        await $module.initUpdateFormData(query.id as string)
+    }
 })
 
 
 const onSubmit = async(action: number) => {
     console.log('onSubmit()')
-    // const submitted = await $module.onSubmit({data: {...$module.formData}})
+    const submitted = await $module.onCreate({data: {...$module.formData}})
 
-    // if(!submitted){
-    //     toast.error('Failed to save ' + moduleLabel)
-    //     return 
-    // }
+    if(!submitted){
+        toast.error('Failed to save ' + moduleLabel)
+        return 
+    }
 
-    // $module.resetFormData()
+    $module.resetFormData()
     toast.success(moduleLabel + ' successfully saved!')
 
-    if(action === 2){
+    if(action === 1){
         router.push({name: routeNames.purchasing_canvass})
     }
 
@@ -221,7 +230,7 @@ const onAddItem = () => {
     item.description = ''
     item.quantity = 0
     item.unit = null
-    $canvass.onAddItem({data: item})
+    $module.onAddItem({data: item})
 }
 
 
