@@ -1,4 +1,4 @@
-import { rv_default_approvers, RVs } from "../__temp__/data";
+import { rv_default_approvers } from "../__temp__/data";
 import { supervisorLabel } from "../common";
 import { APPROVAL_STATUS, IApprover, IRVApproverDefault } from "../common/entities";
 import { IItem } from "../common/entities/item.entity";
@@ -6,7 +6,7 @@ import { ICreateRVDto } from "./dto/rv.dto";
 import { IRV } from "./entities"
 import { faker } from '@faker-js/faker';
 import moment from 'moment'
-import * as mock from '../__temp__/data'
+// import * as mock from '../__temp__/data'
 
 class RVService{
 
@@ -38,6 +38,8 @@ class RVService{
         item.rv_number = '23-0000' + this.ctr
         item.work_order_date = payload.data.work_order_date
         item.work_order_no = payload.data.work_order_no
+        item.supervisor_id = payload.data.supervisor.id
+        item.supervisor = payload.data.supervisor
         item.is_cancelled = false
 
         item.items = payload.data.items.map(i => {
@@ -81,11 +83,11 @@ class RVService{
 
         item.approvers = approvers
         
-        approvers.forEach(i => mock.approvers.push(i))
+        // approvers.forEach(i => mock.approvers.push(i))
         
         this.ctr ++ 
 
-        RVs.unshift(item)
+        // RVs.unshift(item)
 
         return item
     }

@@ -103,10 +103,12 @@
     import { IITemDto } from '../common/dto/IItem.dto';
     import { ICreateRVDto } from './dto/rv.dto';
     import Particulars from './components/Particulars.vue';
+    import { tempStore } from '../__temp__/temp.store';
 
     const toast = useToast();
     const router = useRouter()
     const $module = rvStore()
+    const $temp = tempStore()
 
     $module.setUnits(mock.units)
     $module.setBrands(mock.brands)
@@ -201,7 +203,8 @@
         data.date_requested = formData.date_requested
         data.items = formData.items
         data.supervisor = formData.supervisor
-        data.work_order_date
+        data.work_order_date = formData.work_order_date
+        data.work_order_no = formData.work_order_no
 
 
         const submitted = await $module.onCreate({data})
@@ -210,6 +213,11 @@
             toast.error('Failed to save ' + moduleLabel)
             return 
         }
+
+        // add to temp store
+        $temp.saveApprovers(submitted.approvers)
+        $temp.saveRv(submitted)
+        $temp.saveItems(submitted.items)
 
         $module.resetFormData()
         toast.success(moduleLabel + ' successfully saved!')

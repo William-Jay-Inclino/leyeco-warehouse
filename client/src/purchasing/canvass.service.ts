@@ -2,7 +2,6 @@ import { IItem } from "../common/entities/item.entity";
 import { ICreateCanvassDto } from "./dto/canvass.dto";
 import { ICanvass } from "./entities"
 import { faker } from '@faker-js/faker';
-import { canvasses } from "../__temp__/data";
 
 class CanvassService{
 
@@ -29,10 +28,12 @@ class CanvassService{
         item.id = canvassId
         item.date_requested = payload.data.date_requested
         item.noted_by = payload.data.noted_by!
+        item.noted_by_id = payload.data.noted_by!.id
         item.notes = payload.data.notes 
         item.purpose = payload.data.purpose
         item.rc_number = '23-0000' + this.ctr
         item.requested_by = payload.data.requested_by!
+        item.requested_by_id = payload.data.requested_by!.id
         
         item.items = payload.data.items.map(i => {
             const x = {} as IItem
@@ -50,7 +51,7 @@ class CanvassService{
 
         this.ctr ++ 
 
-        canvasses.unshift(item)
+        // canvasses.unshift(item)
 
         return item
     }

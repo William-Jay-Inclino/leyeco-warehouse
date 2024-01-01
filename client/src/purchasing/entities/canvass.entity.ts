@@ -8,7 +8,9 @@ export interface ICanvass {
     date_requested: string
     purpose: string
     notes: string
+    requested_by_id: string
     requested_by: IEmployee
+    noted_by_id: string 
     noted_by: IEmployee 
     items: IItem[]
 }

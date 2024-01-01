@@ -1,6 +1,7 @@
 import { faker } from '@faker-js/faker';
-import { DEPARTMENT_STATUS, DIVISION_STATUS, EMPLOYEE_POSITION, IApprover, IBrand, IClassification, IDepartment, IDivision, IEmployee, IJOApproverDefault, IMEQSApproverDefault, IPOApproverDefault, IRVApproverDefault, ISPRApproverDefault, ISupplier, IUnit } from '../common/entities';
+import { DEPARTMENT_STATUS, DIVISION_STATUS, EMPLOYEE_POSITION, IApprover, IBrand, IClassification, IDepartment, IDivision, IEmployee, IJO, IJOApproverDefault, IMEQS, IMEQSApproverDefault, IPO, IPOApproverDefault, IPOItems, IRVApproverDefault, ISPR, ISPRApproverDefault, ISupplier, IUnit } from '../common/entities';
 import { ICanvass, IRV } from '../purchasing/entities';
+import { IItem } from '../common/entities/item.entity';
 
 export const suppliers: ISupplier[] = [
     { 
@@ -127,7 +128,6 @@ export const units: IUnit[] = [
         name: 'Pallets'
     }
 ]
-
 
 export const brands: IBrand[] = [
     {
@@ -402,7 +402,6 @@ export const meqs_default_approvers: IMEQSApproverDefault[] = [
     },
 ]
 
-
 export const po_default_approvers: IPOApproverDefault[] = [
     {
         id: faker.string.uuid(),
@@ -442,10 +441,26 @@ const canvass: ICanvass = {
     date_requested: "2024-01-01",
     purpose: 'purpose',
     notes: 'notes',
+    requested_by_id: employees[9].id,
     requested_by: employees[9],
+    noted_by_id: employees[10].id,
     noted_by: employees[10],
     items: []
 }
+
+const canvassItems: IItem[] = [
+    {
+        id: faker.string.uuid(),
+        canvass_id: canvassId,
+        canvass,
+        description: 'Item 1',
+        brand_id: brands[0].id,
+        brand: brands[0],
+        unit_id: units[0].id,
+        unit: units[0],
+        quantity: 5,
+    }
+]
 
 export const canvasses: ICanvass[] = [
     {
@@ -454,23 +469,20 @@ export const canvasses: ICanvass[] = [
         date_requested: canvass.date_requested,
         purpose: canvass.purpose,
         notes: canvass.notes,
+        requested_by_id: canvass.requested_by.id,
         requested_by: canvass.requested_by,
+        noted_by_id: canvass.noted_by.id,
         noted_by: canvass.noted_by,
-        items: [
-            {
-                id: faker.string.uuid(),
-                canvass_id: canvassId,
-                canvass,
-                description: 'Item 1',
-                brand_id: brands[0].id,
-                brand: brands[0],
-                unit_id: units[0].id,
-                unit: units[0],
-                quantity: 5,
-            }
-        ]
+        items: canvassItems
     }
 ]
 export const RVs: IRV[] = []
+export const JOs: IJO[] = []
+export const SPRs: ISPR[] = []
+export const MEQSs: IMEQS[] = []
+export const POs: IPO[] = []
+export const POItems: IPOItems[] = []
 
 export const approvers: IApprover[] = []
+
+export const items: IItem[] = [...canvassItems]

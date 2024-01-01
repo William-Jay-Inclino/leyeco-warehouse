@@ -103,10 +103,12 @@
     import { canvassStore } from './canvass.store';
     import { IITemDto } from '../common/dto/IItem.dto';
     import Particulars from './components/Particulars.vue';
+    import { tempStore } from '../__temp__/temp.store';
 
     const toast = useToast();
     const router = useRouter()
     const $module = canvassStore()
+    const $temp = tempStore()
 
     const _units = mock.units
     const _brands = mock.brands 
@@ -159,6 +161,9 @@
             toast.error('Failed to save ' + moduleLabel)
             return 
         }
+
+        $temp.saveCanvass(submitted)
+        $temp.saveItems(submitted.items)
 
         $module.resetFormData()
         toast.success(moduleLabel + ' successfully saved!')

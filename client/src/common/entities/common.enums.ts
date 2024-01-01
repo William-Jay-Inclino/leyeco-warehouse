@@ -28,3 +28,9 @@ export const enum APPROVAL_STATUS {
     DISAPPROVED = 3,
     // CANCELLED = 4,
 }
+
+export const enum REQUEST_TYPES {
+    JO = 1,
+    RV = 2,
+    SPR = 3
+}
