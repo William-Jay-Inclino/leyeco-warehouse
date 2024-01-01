@@ -1,19 +1,21 @@
 import { IItem } from "../common/entities/item.entity";
-import { ICreateCanvassDto } from "./dto";
+import { ICreateCanvassDto } from "./dto/canvass.dto";
 import { ICanvass } from "./entities"
 import { faker } from '@faker-js/faker';
+import { canvasses } from "../__temp__/data";
 
 class CanvassService{
 
-    private endpoint = '/canvass/'
+    // private endpoint = '/canvass/'
     private service = 'CanvassService: '
-    private ctr = 1
+    private ctr = 2
 
     async findAll(): Promise<ICanvass[]>{
         return []
     }
 
     async findOne(id: string): Promise<ICanvass | null>{
+        console.log('id', id)
         const item = {} as ICanvass 
         return item
     }
@@ -34,8 +36,8 @@ class CanvassService{
         
         item.items = payload.data.items.map(i => {
             const x = {} as IItem
-            x.brand_id = i.brand!.id 
-            x.brand = i.brand!
+            x.brand_id = i.brand ? i.brand.id : null
+            x.brand = i.brand || null
             x.canvass_id = canvassId
             x.canvass = item 
             x.description = i.description
@@ -48,15 +50,19 @@ class CanvassService{
 
         this.ctr ++ 
 
+        canvasses.unshift(item)
+
         return item
     }
 
     async update(payload: {id: string, data: ICanvass}): Promise<ICanvass | null>{
+        console.log('payload', payload)
         const item = {} as ICanvass 
         return item
     }
 
     async remove(id: string): Promise<boolean> {
+        console.log('id', id)
         return true
     }
 

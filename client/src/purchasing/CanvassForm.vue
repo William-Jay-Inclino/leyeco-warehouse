@@ -79,65 +79,9 @@
             <div class="col-6">
                 <div class="row">
                     <div class="col">
-                        <div class="card shadow mb-4">
-                            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between bg-primary text-white">
-                                <h6 class="m-0 font-weight-bold"> Particulars </h6>
-                            </div>
-                
-                            <div class="card-body">
-                                <div class="table-responsive">
-                                    <table class="table table-hover">
-                                        <thead>
-                                            <th>No.</th>
-                                            <th>Description</th>
-                                            <th>Brand</th>
-                                            <th>Unit</th>
-                                            <th>Quantity</th>
-                                            <th class="text-center">
-                                                <i class="fas fa-fw fa-cogs"></i>
-                                            </th>
-                                        </thead>
-                                        <tbody>
-                                            <tr v-for="item, i in $module.formData.items">
-                                                <td> {{ i + 1 }}. </td>
-                                                <td>
-                                                    <textarea class="form-control" rows="3" v-model="item.description"></textarea>
-                                                </td>
-                                                <td>
-                                                    <select class="form-control" v-model="item.brand">
-                                                        <option value="null">n/a</option>
-                                                        <option :value="i" :key="i.id" v-for="i in $module.brands">
-                                                            {{ i.name }}
-                                                        </option>
-                                                    </select>
-                                                </td>
-                                                <td>
-                                                    <select class="form-control" v-model="item.unit">
-                                                        <option :value="i" :key="i.id" v-for="i in $module.units">
-                                                            {{ i.name }}
-                                                        </option>
-                                                    </select>
-                                                </td>
-                                                <td>
-                                                    <input type="number" class="form-control" v-model="item.quantity">
-                                                </td>
-                                                <td>
-                                                    <button @click="$module.onRemoveItem({indx: i})" class="btn btn-light">
-                                                        <i class="fas fa-fw fa-trash text-danger"></i> 
-                                                    </button>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="text-center" colspan="6">
-                                                    <button @click="onAddItem()" class="btn btn-secondary btn-sm">Add Particular</button>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
 
-                        </div>
+                        <Particulars :items="$module.formData.items" @add-item="addItem" @remove-item="removeItem"/>
+
                     </div>
                 </div>
             </div>
@@ -150,94 +94,98 @@
 
 
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
-import { onBeforeRouteLeave, useRouter } from 'vue-router';
-import Breadcrumbs from '../common/components/Breadcrumbs.vue'
-import { useToast } from "vue-toastification";
-import { routeNames } from '../common';
-import { ICanvassItemDto } from './dto';
-import * as mock from '../__temp__/data'
-import { canvassStore } from './canvass.store';
+    import { onMounted, ref } from 'vue';
+    import { onBeforeRouteLeave, useRouter } from 'vue-router';
+    import Breadcrumbs from '../common/components/Breadcrumbs.vue'
+    import { useToast } from "vue-toastification";
+    import { routeNames } from '../common';
+    import * as mock from '../__temp__/data'
+    import { canvassStore } from './canvass.store';
+    import { IITemDto } from '../common/dto/IItem.dto';
+    import Particulars from './components/Particulars.vue';
 
-const toast = useToast();
-const router = useRouter()
-const $module = canvassStore()
+    const toast = useToast();
+    const router = useRouter()
+    const $module = canvassStore()
 
-const _units = mock.units
-const _brands = mock.brands 
-const _employees = mock.employees
+    const _units = mock.units
+    const _brands = mock.brands 
+    const _employees = mock.employees
 
-$module.setUnits(_units)
-$module.setBrands(_brands)
-$module.setEmployees(_employees)
+    $module.setUnits(_units)
+    $module.setBrands(_brands)
+    $module.setEmployees(_employees)
 
-const moduleLabel = 'Canvass'
-// const errorMsg = ref('This field is required')
+    const moduleLabel = 'Canvass'
+    // const errorMsg = ref('This field is required')
 
-const breadcrumbItems = ref([
-    {
-        text: 'Canvass List',
-        route: routeNames.purchasing_canvass,
-        isActive: false,
-    },
-    {
-        text: 'Canvass Form',
-        route: routeNames.purchasing_canvass_form,
-        isActive: true,
+    const breadcrumbItems = ref([
+        {
+            text: 'Canvass List',
+            route: routeNames.purchasing_canvass,
+            isActive: false,
+        },
+        {
+            text: 'Canvass Form',
+            route: routeNames.purchasing_canvass_form,
+            isActive: true,
+        }
+    ])
+
+    onBeforeRouteLeave( (to: any, from: any, next: any) => {
+        console.log('onBeforeRouteLeave()')
+        console.log({to})
+        console.log({from})
+        $module.resetFormData()
+
+        next()
+    })
+
+    onMounted( async() => {
+        const query = router.currentRoute.value.query
+
+        if(query.id){
+            // intialize update form / populate form 
+            await $module.initUpdateFormData(query.id as string)
+        }
+    })
+
+
+    const onSubmit = async(action: number) => {
+        console.log('onSubmit()')
+        const submitted = await $module.onCreate({data: {...$module.formData}})
+
+        if(!submitted){
+            toast.error('Failed to save ' + moduleLabel)
+            return 
+        }
+
+        $module.resetFormData()
+        toast.success(moduleLabel + ' successfully saved!')
+
+        if(action === 1){
+            router.push({name: routeNames.purchasing_canvass})
+        }
+
     }
-])
 
-onBeforeRouteLeave( (to: any, from: any, next: any) => {
-    console.log('onBeforeRouteLeave()')
-    console.log({to})
-    console.log({from})
-    $module.resetFormData()
+    const addItem = (data: IITemDto) => $module.onAddItem({data})
+    const removeItem = (indx: number) => $module.onRemoveItem({indx})
 
-    next()
-})
-
-onMounted( async() => {
-    const query = router.currentRoute.value.query
-
-    if(query.id){
-        // intialize update form / populate form 
-        await $module.initUpdateFormData(query.id as string)
-    }
-})
+    // const onAddItem = () => {
+    //     const item = {} as IITemDto
+    //     item.brand = null 
+    //     item.description = ''
+    //     item.quantity = 0
+    //     item.unit = null
+    //     $module.onAddItem({data: item})
+    // }
 
 
-const onSubmit = async(action: number) => {
-    console.log('onSubmit()')
-    const submitted = await $module.onCreate({data: {...$module.formData}})
-
-    if(!submitted){
-        toast.error('Failed to save ' + moduleLabel)
-        return 
-    }
-
-    $module.resetFormData()
-    toast.success(moduleLabel + ' successfully saved!')
-
-    if(action === 1){
-        router.push({name: routeNames.purchasing_canvass})
-    }
-
-}
-
-const onAddItem = () => {
-    const item = {} as ICanvassItemDto
-    item.brand = null 
-    item.description = ''
-    item.quantity = 0
-    item.unit = null
-    $module.onAddItem({data: item})
-}
-
-
-// const onCancel = () => {
-//     // $module.resetFormData()
-//     router.push({name: routeNames.purchasing_canvass})
-// }
+    // const onCancel = () => {
+    //     // $module.resetFormData()
+    //     router.push({name: routeNames.purchasing_canvass})
+    // }
 
 </script>
 

@@ -1,56 +1,57 @@
 
 import { defineStore } from 'pinia'
-import { ICreateCanvassDto, IFormData, IUpdateCanvassDto } from './dto/canvass.dto'
+import { ICreateRVDto, IFormData, IUpdateRVDto } from './dto/rv.dto'
 import { computed, ref } from 'vue'
-import { ICanvass } from './entities'
-import { IBrand, IEmployee, IUnit } from '../common/entities'
+import { ICanvass, IRV, IStatusObject } from './entities'
+import { APPROVAL_STATUS, IBrand, IEmployee, IUnit } from '../common/entities'
 import moment from 'moment'
-import { convertMiddleNameToInitial } from '../common'
-import { canvassService } from './canvass.service'
+import { approvalStatus, convertMiddleNameToInitial } from '../common'
+import { rVService } from './rv.service'
 import { IITemDto } from '../common/dto/IItem.dto'
 
-export const canvassStore = defineStore('canvass', () => {
+export const rvStore = defineStore('rv', () => {
 
-    const _store = 'canvassStore: '
+    const _store = 'rvStore: '
     const today = moment().format('YYYY-MM-DD')
 
     const _formDataInitial: IFormData = {
         id: '',
+        rc_no: '',
+        canvass: null,
+        supervisor: null,
         date_requested: today,
-        purpose: '',
-        notes: '',
-        requested_by: null,
-        noted_by: null,
-        items: [],
+        work_order_no: '',
+        work_order_date: '',
+        items: []
     }
 
     const _formErrorsInitial = {
+        canvass: false,
         date_requested: false,
-        purpose: false,
-        notes: false,
-        requested_by: false,
-        noted_by: false,
+        work_order_no: false,
+        work_order_date: false,
         items: false,
     }
     
     // state
     const formData = ref({..._formDataInitial});
     const formErrors = ref({..._formErrorsInitial})
-    const _items = ref<ICanvass[]>([])
+    const _items = ref<IRV[]>([])
     const _units = ref<IUnit[]>([])
     const _brands = ref<IBrand[]>([])
     const _employees = ref<IEmployee[]>([])
-
-    // onMounted( async() => {
-    //     console.log(_store + 'onMounted()')
-    //     const items = await bartService.findAll()
-    //     setBarts(items)
-    // })
+    const _canvasses = ref<ICanvass[]>([])
 
     // getters 
-    const items = computed( () => _items.value)
+    const items = computed( () => {
+        return _items.value.map(i => ({...i, statusObj: getStatus(i)}))
+    })
     const units = computed( () => _units.value)
     const brands = computed( () => _brands.value)
+
+    const canvasses = computed( () => _canvasses.value.map(obj => ({...obj, label: obj.rc_number })))
+
+
     const employees = computed( () => {
         return _employees.value.map(obj => {
             let label = ''
@@ -65,7 +66,23 @@ export const canvassStore = defineStore('canvass', () => {
         })
     })
 
-    const formIsEditMode = computed( (): boolean => false)
+    const formIsEditMode = computed( (): boolean => {
+        if(formData.value.id && formData.value.id.trim() !== ''){
+            return true 
+        }
+        return false 
+    })
+
+    // const formCanvassId = computed( () => formData.value.canvass ? formData.value.canvass.id : null)
+
+
+    // watchers 
+
+    // watch(formCanvassId, (val) => {
+    //     if(val && formData.value.canvass){
+    //         formData.value.items = [...formData.value.canvass.items]
+    //     }
+    // })
 
     // setters 
 
@@ -84,12 +101,12 @@ export const canvassStore = defineStore('canvass', () => {
         _employees.value = items
     }
 
-    const setItems = (items: ICanvass[]) => {
-        console.log(_store + 'setEmployees()', items)
-        _items.value = items
+    const setCanvasses = (items: ICanvass[]) => {
+        console.log(_store + 'setCanvasses()', items)
+        _canvasses.value = items
     }
 
-    const setFormData = (payload: {data: ICanvass}) => {
+    const setFormData = (payload: {data: IRV}) => {
         console.log(_store + 'setFormData()', payload)
 
         const items = payload.data.items.map(i => {
@@ -104,11 +121,12 @@ export const canvassStore = defineStore('canvass', () => {
 
         formData.value = {
             id: payload.data.id,
+            rc_no: payload.data.canvass.rc_number,
+            canvass: payload.data.canvass,
             date_requested: payload.data.date_requested,
-            purpose: payload.data.purpose,
-            notes: payload.data.purpose,
-            requested_by: payload.data.requested_by,
-            noted_by: payload.data.noted_by,
+            work_order_no: payload.data.work_order_no,
+            work_order_date: payload.data.work_order_date,
+            supervisor: payload.data.supervisor,
             items: items
         }
     }
@@ -124,10 +142,10 @@ export const canvassStore = defineStore('canvass', () => {
         }
     }
 
-    const onCreate = async(payload: {data: ICreateCanvassDto}): Promise<ICanvass | null> => {
+    const onCreate = async(payload: {data: ICreateRVDto}): Promise<IRV | null> => {
         console.log(_store + 'onCreate()', payload)
 
-        const created = await canvassService.create(payload)
+        const created = await rVService.create(payload)
         console.log('created', created)
         if(created){
             console.log('Successfully created')
@@ -138,7 +156,7 @@ export const canvassStore = defineStore('canvass', () => {
         return null
     }
 
-    const onUpdate = async(payload: {data: IUpdateCanvassDto}): Promise<ICanvass | null> => {
+    const onUpdate = async(payload: {data: IUpdateRVDto}): Promise<IRV | null> => {
         console.log(_store + 'onUpdate()', payload)
         return null
 
@@ -164,7 +182,7 @@ export const canvassStore = defineStore('canvass', () => {
             return false 
         }
 
-        const deleted = await canvassService.remove(id)
+        const deleted = await rVService.remove(id)
 
         if(deleted){
             _items.value.splice(indx, 1)
@@ -182,7 +200,39 @@ export const canvassStore = defineStore('canvass', () => {
         formErrors.value = {..._formErrorsInitial}
     }
 
+
+    /* 
+        1. check if rv is cancelled
+        2. check if there is an approver who disapproves
+        3. Check if there is still an approver who is pending 
+        4. Else all approver approves
+    */
+
+    const getStatus = (item: IRV): IStatusObject => {
+        console.log('getStatus()', item)
+    
+        if(item.is_cancelled){
+            return approvalStatus["cancelled"]
+        }
+    
+        const hasDisapproved = item.approvers.find(i => i.status === APPROVAL_STATUS.DISAPPROVED)
+    
+        if(hasDisapproved){
+            return approvalStatus[APPROVAL_STATUS.DISAPPROVED]
+        }
+    
+        const hasPending = item.approvers.find(i => i.status === APPROVAL_STATUS.PENDING)
+    
+        if(hasPending){
+            return approvalStatus[APPROVAL_STATUS.PENDING]
+        }
+    
+        return approvalStatus[APPROVAL_STATUS.APPROVED]
+    
+    }
+
     return {
+        _items,
         items,
         formData,
         formErrors,
@@ -190,6 +240,7 @@ export const canvassStore = defineStore('canvass', () => {
         units,
         brands,
         employees,
+        canvasses,
         onCreate,
         onUpdate,
         onAddItem,
@@ -197,7 +248,7 @@ export const canvassStore = defineStore('canvass', () => {
         setUnits,
         setBrands,
         setEmployees,
-        setItems,
+        setCanvasses,
         // onSubmit,
         onDelete,
         resetFormData,

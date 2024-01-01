@@ -1,4 +1,5 @@
-import { IBrand, IEmployee, IUnit } from "../../common/entities"
+import { IITemDto } from "../../common/dto/IItem.dto"
+import { IEmployee} from "../../common/entities"
 
 export interface IFormData{
     id: string
@@ -7,7 +8,7 @@ export interface IFormData{
     notes: string
     requested_by: IEmployee | null
     noted_by: IEmployee | null
-    items: ICanvassItemDto[]
+    items: IITemDto[]
 }
 
 export interface ICreateCanvassDto {
@@ -16,7 +17,7 @@ export interface ICreateCanvassDto {
     notes: string
     requested_by: IEmployee | null
     noted_by: IEmployee | null
-    items: ICanvassItemDto[]
+    items: IITemDto[]
 }
 
 export interface IUpdateCanvassDto{
@@ -26,12 +27,4 @@ export interface IUpdateCanvassDto{
     notes?: string
     requested_by?: IEmployee | null
     noted_by?: IEmployee | null
-}
-
-export interface ICanvassItemDto {
-    id: string
-    description: string
-    brand: IBrand | null
-    unit: IUnit | null
-    quantity: number 
 }

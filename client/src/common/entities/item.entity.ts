@@ -1,5 +1,5 @@
 import { IBrand, IUnit } from "."
-import { ICanvass } from "../../purchasing/entities"
+import { ICanvass, IRV } from "../../purchasing/entities"
 
 
 export interface IItem {
@@ -8,10 +8,11 @@ export interface IItem {
     canvass?: ICanvass
     jo_id?: string | null
     rv_id?: string | null
+    rv?: IRV
     spr_id?: string | null
     description: string
-    brand_id: string 
-    brand: IBrand
+    brand_id: string | null
+    brand: IBrand | null
     unit_id: string
     unit: IUnit 
     quantity: number 

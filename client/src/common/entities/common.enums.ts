@@ -12,6 +12,19 @@ export const enum DIVISION_STATUS {
 
 export const enum EMPLOYEE_POSITION {
     ADMIN = 1,
-    WAREHOUSE_OPERATOR = 2,
+    GM = 2,
     AUDIT = 3,
+    IT = 4,
+    CETD = 5,
+    BUDGET_OFFICER = 6,
+    WAREHOUSE_OPERATOR = 7,
+    CPC_MEMBER = 8,
+    FINANCE = 9,
+}
+
+export const enum APPROVAL_STATUS {
+    PENDING = 1,
+    APPROVED = 2,
+    DISAPPROVED = 3,
+    // CANCELLED = 4,
 }

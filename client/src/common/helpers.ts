@@ -8,6 +8,9 @@ export function convertMiddleNameToInitial(middleName: string) {
   }
 
 
-  export function getFullname(firstname: string, middlename: string, lastname: string){
-    return lastname + ', ' + firstname + ' ' + convertMiddleNameToInitial(middlename)
+  export function getFullname(firstname: string, middlename: string | null, lastname: string){
+    if(middlename){
+      return lastname + ', ' + firstname + ' ' + convertMiddleNameToInitial(middlename)
+    }
+    return lastname + ', ' + firstname
   }

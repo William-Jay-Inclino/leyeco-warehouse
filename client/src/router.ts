@@ -33,6 +33,18 @@ const routes = [
         component: () => import('./purchasing/CanvassForm.vue'),
     },
 
+    {
+        path: '/purchasing/rv',
+        name: routeNames.purchasing_rv,
+        component: () => import('./purchasing/RV.vue'),
+    },
+
+    {
+        path: '/purchasing/rv/form',
+        name: routeNames.purchasing_rv_form,
+        component: () => import('./purchasing/RVForm.vue'),
+    },
+
 ]
 
 

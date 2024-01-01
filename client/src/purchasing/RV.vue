@@ -9,7 +9,7 @@
             </div>
             <div class="row mb-4">
             <div class="col">
-                <h2 class="h5 mb-0 text-gray-600">Canvass</h2>
+                <h2 class="h5 mb-0 text-gray-600">RV</h2>
             </div>
         </div>
 
@@ -22,8 +22,8 @@
                             <Search />
                             </div>
                             <div class="col-4 text-right">
-                            <router-link :to="{name: routeNames.purchasing_canvass_form}">
-                                <button class="btn btn-primary">Add Canvass</button>
+                            <router-link :to="{name: routeNames.purchasing_rv_form}">
+                                <button class="btn btn-primary">Add RV</button>
                             </router-link>
                             </div>
                         </div>
@@ -42,31 +42,27 @@
                                     <table class="table table-hover">
                                         <thead>
                                             <tr>
-                                                <th width="30%">RC Number</th>
-                                                <th width="30%">Requisitioner</th>
-                                                <th width="30%">Date</th>
+                                                <th>RV Number</th>
+                                                <th>RC Number</th>
+                                                <th>Requisitioner</th>
+                                                <th>Date</th>
+                                                <th class="text-center">Status</th>
                                                 <th class="text-center">
                                                     <i class="fas fa-fw fa-cogs"></i>
                                                 </th>
                                             </tr>
-                                            <!-- <tr>
-                                                <td>
-                                                    <TableSearch />
-                                                </td>
-                                                <td>
-                                                    <TableSearch />
-                                                </td>
-                                                <td>
-                                                    <TableSearch />
-                                                </td>
-                                                <td></td>
-                                            </tr> -->
                                         </thead>
                                         <tbody>
                                             <tr v-for="item in $module.items">
-                                                <td> {{ item.rc_number }} </td>
-                                                <td> {{ getFullname(item.requested_by.firstname, item.requested_by.middlename, item.requested_by.lastname) }} </td>
+                                                <td> {{ item.rv_number }} </td>
+                                                <td> {{ item.canvass.rc_number }} </td>
+                                                <td> {{ getFullname(item.canvass.requested_by.firstname, item.canvass.requested_by.middlename, item.canvass.requested_by.lastname) }} </td>
                                                 <td> {{ item.date_requested }} </td>
+                                                <td class="text-center"> 
+                                                    <span :class="{[`badge-${item.statusObj.color}`]: true}" class="badge badge-pill text-white"> 
+                                                        {{ item.statusObj.label }} 
+                                                    </span> 
+                                                </td>
                                                 <td class="text-center">
                                                     <button @click="onClickUpdate(item)" class="btn btn-light btn-sm">
                                                         <i class="fas fa-fw fa-pencil-alt"></i>
@@ -101,29 +97,24 @@
 <script setup lang="ts">
 import { useToast } from "vue-toastification";
 import Swal from 'sweetalert2'
-// import TableSearch from './components/TableSearch.vue'
-import Search from "./components/Search.vue";
+import Search from './components/Search.vue'
 import TablePagination from './components/TablePagination.vue'
 import TablePerPage from './components/TableSelectPerPage.vue'
 import { routeNames } from '../common';
-import { canvassStore } from './canvass.store';
+import { rvStore } from './rv.store';
 import { getFullname } from '../common'
-import { ICanvass } from './entities';
+import { IRV } from './entities';
 import { useRouter } from 'vue-router';
 
-import * as mock from '../__temp__/data'
-
-const $module = canvassStore()
+const $module = rvStore()
 const toast = useToast();
 const router = useRouter()
 
-$module.setItems(mock.canvasses)
-
-const onDelete = async(item: ICanvass) => {
+const onDelete = async(item: IRV) => {
 
     Swal.fire({
         title: "Are you sure?",
-        text: item.rc_number + " will be removed!",
+        text: "RV No. " + item.rv_number + " will be removed!",
         position: "top",
         icon: "warning",
         showCancelButton: true,
@@ -136,10 +127,10 @@ const onDelete = async(item: ICanvass) => {
             const removed = await $module.onDelete(item.id)
 
             if(removed){
-                toast.success(item.rc_number + ' successfully removed!')
+                toast.success("RV No. " + item.rv_number + ' successfully removed!')
 
             }else{
-                toast.error('Failed to remove ' + item.rc_number)
+                toast.error('Failed to remove RV No. ' + item.rv_number)
             }
         }
     });
@@ -147,9 +138,39 @@ const onDelete = async(item: ICanvass) => {
 }
 
 
-const onClickUpdate = (data: ICanvass) => {
-    router.push({name: routeNames.purchasing_canvass_form, query: {id: data.id}})
+const onClickUpdate = (data: IRV) => {
+    router.push({name: routeNames.purchasing_rv_form, query: {id: data.id}})
 }
 
+
+/* 
+    1. check if rv is cancelled
+    2. check if there is an approver who disapproves
+    3. Check if there is still an approver who is pending 
+    4. Else all approver approves
+*/
+
+// const getStatus = (item: IRV) => {
+//     console.log('getStatus()', item)
+
+//     if(item.is_cancelled){
+//         return approvalStatus['cancelled'].label
+//     }
+
+//     const hasDisapproved = item.approvers.find(i => i.status === APPROVAL_STATUS.DISAPPROVED)
+
+//     if(hasDisapproved){
+//         return approvalStatus[APPROVAL_STATUS.DISAPPROVED].label
+//     }
+
+//     const hasPending = item.approvers.find(i => i.status === APPROVAL_STATUS.PENDING)
+
+//     if(hasPending){
+//         return approvalStatus[APPROVAL_STATUS.PENDING].label
+//     }
+
+//     return approvalStatus[APPROVAL_STATUS.APPROVED].label
+
+// }
 
 </script>

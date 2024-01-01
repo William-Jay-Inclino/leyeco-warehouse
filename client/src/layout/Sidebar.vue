@@ -28,7 +28,7 @@
                     <router-link :to="{name: routeNames.purchasing_canvass}" class="collapse-item">
                         <span class="ml-2">Canvass</span>
                     </router-link>
-                    <router-link :to="{name: routeNames.purchasing_canvass}" class="collapse-item">
+                    <router-link :to="{name: routeNames.purchasing_rv}" class="collapse-item">
                         <span class="ml-2">RV</span>
                     </router-link>
                     <router-link :to="{name: routeNames.purchasing_canvass}" class="collapse-item">

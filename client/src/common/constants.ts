@@ -1,4 +1,4 @@
-import { DEPARTMENT_STATUS } from "./entities/common.enums"
+import { APPROVAL_STATUS, DEPARTMENT_STATUS } from "./entities/common.enums"
 
 export const routeNames = {
     dashboard: 'dashboard.route',
@@ -6,8 +6,11 @@ export const routeNames = {
     home: 'home.route',
     purchasing_canvass: 'purchasing_canvass.route',
     purchasing_canvass_form: 'purchasing_canvass_form.route',
+    purchasing_rv: 'purchasing_rv.route',
+    purchasing_rv_form: 'purchasing_rv_form.route',
 }
 
+export const supervisorLabel = 'Imd. Sup.'
 
 export const departmentStatus = {
     [DEPARTMENT_STATUS.ACTIVE]: {
@@ -33,4 +36,27 @@ export const divisionStatus = {
         label: 'Inactive',
         color: 'danger',
     }
+}
+
+export const approvalStatus = {
+    [APPROVAL_STATUS.PENDING]: {
+        value: APPROVAL_STATUS.PENDING,
+        label: 'Pending',
+        color: 'primary',
+    },
+    [APPROVAL_STATUS.APPROVED]: {
+        value: APPROVAL_STATUS.APPROVED,
+        label: 'Approved',
+        color: 'success',
+    },
+    [APPROVAL_STATUS.DISAPPROVED]: {
+        value: APPROVAL_STATUS.DISAPPROVED,
+        label: 'Disapproved',
+        color: 'danger',
+    },
+    ['cancelled']: {
+        value: 'cancelled',
+        label: 'Cancelled',
+        color: 'warning',
+    },
 }
