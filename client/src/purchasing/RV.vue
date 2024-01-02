@@ -67,9 +67,9 @@
                                                     <button @click="onClickUpdate(item)" class="btn btn-light btn-sm">
                                                         <i class="fas fa-fw fa-pencil-alt"></i>
                                                     </button>
-                                                    <button @click="onDelete(item)" class="btn btn-light btn-sm">
+                                                    <!-- <button @click="onDelete(item)" class="btn btn-light btn-sm">
                                                         <i class="fas fa-fw fa-trash text-danger"></i>
-                                                    </button>
+                                                    </button> -->
                                                 </td>
                                             </tr>
                                         </tbody>
@@ -95,8 +95,8 @@
 </template>
 
 <script setup lang="ts">
-import { useToast } from "vue-toastification";
-import Swal from 'sweetalert2'
+// import { useToast } from "vue-toastification";
+// import Swal from 'sweetalert2'
 import Search from './components/Search.vue'
 import TablePagination from './components/TablePagination.vue'
 import TablePerPage from './components/TableSelectPerPage.vue'
@@ -107,35 +107,35 @@ import { IRV } from './entities';
 import { useRouter } from 'vue-router';
 
 const $module = rvStore()
-const toast = useToast();
+// const toast = useToast();
 const router = useRouter()
 
-const onDelete = async(item: IRV) => {
+// const onDelete = async(item: IRV) => {
 
-    Swal.fire({
-        title: "Are you sure?",
-        text: "RV No. " + item.rv_number + " will be removed!",
-        position: "top",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#e74a3b",
-        cancelButtonColor: "#6c757d",
-        confirmButtonText: "Yes, delete it!",
-        reverseButtons: true,
-        }).then( async(result) => {
-        if (result.isConfirmed) {
-            const removed = await $module.onDelete(item.id)
+//     Swal.fire({
+//         title: "Are you sure?",
+//         text: "RV No. " + item.rv_number + " will be removed!",
+//         position: "top",
+//         icon: "warning",
+//         showCancelButton: true,
+//         confirmButtonColor: "#e74a3b",
+//         cancelButtonColor: "#6c757d",
+//         confirmButtonText: "Yes, delete it!",
+//         reverseButtons: true,
+//         }).then( async(result) => {
+//         if (result.isConfirmed) {
+//             const removed = await $module.onDelete(item.id)
 
-            if(removed){
-                toast.success("RV No. " + item.rv_number + ' successfully removed!')
+//             if(removed){
+//                 toast.success("RV No. " + item.rv_number + ' successfully removed!')
 
-            }else{
-                toast.error('Failed to remove RV No. ' + item.rv_number)
-            }
-        }
-    });
+//             }else{
+//                 toast.error('Failed to remove RV No. ' + item.rv_number)
+//             }
+//         }
+//     });
 
-}
+// }
 
 
 const onClickUpdate = (data: IRV) => {

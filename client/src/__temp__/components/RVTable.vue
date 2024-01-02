@@ -25,7 +25,11 @@
                     <td> {{ item.date_requested }} </td>
                     <td> {{ item.work_order_no }} </td>
                     <td> {{ item.work_order_date }} </td>
-                    <td> {{ item.is_cancelled }} </td>
+                    <td>
+                        <button @click="toggleIsCancelled(item)" class="btn btn-sm btn-secondary">
+                            {{ item.is_cancelled }}
+                        </button>
+                    </td>
                 </tr>
             </tbody>
         </table>
@@ -38,10 +42,25 @@
 <script setup lang="ts">
 
     import { tempStore } from '../temp.store';
+    import { rvStore } from '../../purchasing/rv.store';
+    import { IRV } from '../../purchasing/entities';
 
     const $data = tempStore()
+    const $rv = rvStore()
 
     console.log('$data', $data)
+
+    const toggleIsCancelled = (rv: IRV) => {
+        const item = $rv._items.find(i => i.id === rv.id)
+
+        if(!item){
+            console.error('item not found')
+            return 
+        }
+
+        item.is_cancelled = !item.is_cancelled
+
+    }
 
 </script>
 

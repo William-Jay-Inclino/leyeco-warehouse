@@ -5,7 +5,7 @@ import { IItem } from "../common/entities/item.entity";
 import { ICreateRVDto } from "./dto/rv.dto";
 import { IRV } from "./entities"
 import { faker } from '@faker-js/faker';
-import moment from 'moment'
+// import moment from 'moment'
 // import * as mock from '../__temp__/data'
 
 class RVService{
@@ -13,7 +13,7 @@ class RVService{
     // private endpoint = '/rv/'
     private service = 'RVService: '
     private ctr = 1
-    private today = moment().format('YYYY-MM-DD')
+    // private today = moment().format('YYYY-MM-DD')
 
     async findAll(): Promise<IRV[]>{
         return []
@@ -69,7 +69,7 @@ class RVService{
         const approvers = defaultApprovers.map(i => {
             const x = {} as IApprover 
             x.approver_id = i.approver_id
-            x.date_approval = this.today
+            // x.date_approval = this.today
             x.id = faker.string.uuid() 
             x.label = i.label 
             x.notes = ''
