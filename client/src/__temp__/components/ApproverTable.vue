@@ -27,8 +27,12 @@
                     <td> {{ item.spr_id }} </td>
                     <td> {{ item.meqs_id }} </td>
                     <td> {{ item.po_id }} </td>
-                    <td> {{ item.date_approval }} </td>
-                    <td> {{ item.notes }} </td>
+                    <td> 
+                        <input type="date" class="form-control" v-model="item.date_approval">
+                    </td>
+                    <td>
+                        <textarea class="form-control" rows="3" v-model="item.notes"></textarea>
+                    </td>
                     <td class="text-center">
                         <div class="row">
                             <div class="col">

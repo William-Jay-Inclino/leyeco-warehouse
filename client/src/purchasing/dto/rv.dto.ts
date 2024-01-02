@@ -1,5 +1,5 @@
 import { IITemDto } from "../../common/dto/IItem.dto"
-import { IEmployee } from "../../common/entities"
+import { IApprover, IEmployee } from "../../common/entities"
 import { ICanvass } from "../entities"
 
 export interface IFormData{
@@ -11,6 +11,7 @@ export interface IFormData{
     work_order_no: string 
     work_order_date: string 
     items: IITemDto[]
+    approvers: IApprover[]
 }
 
 export interface ICreateRVDto {

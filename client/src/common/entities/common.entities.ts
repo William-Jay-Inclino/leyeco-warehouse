@@ -60,6 +60,7 @@ export interface IBrand { // done
 export interface IApprover { // done
     id: string 
     approver_id: string 
+    approver: IEmployee
     jo_id?: string 
     rv_id?: string
     rv?: IRV 

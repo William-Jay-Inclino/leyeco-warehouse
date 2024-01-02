@@ -5,7 +5,7 @@ import { computed, ref } from 'vue'
 import { ICanvass } from './entities'
 import { IBrand, IEmployee, IUnit } from '../common/entities'
 import moment from 'moment'
-import { convertMiddleNameToInitial } from '../common'
+import { convertMiddleNameToInitial, getFullname } from '../common'
 import { canvassService } from './canvass.service'
 import { IITemDto } from '../common/dto/IItem.dto'
 
@@ -52,17 +52,7 @@ export const canvassStore = defineStore('canvass', () => {
     const units = computed( () => _units.value)
     const brands = computed( () => _brands.value)
     const employees = computed( () => {
-        return _employees.value.map(obj => {
-            let label = ''
-
-            if(obj.middlename){
-                label = `${obj.lastname}, ${obj.firstname} ${convertMiddleNameToInitial(obj.middlename)}`
-            }else{
-                label = `${obj.lastname}, ${obj.firstname}`
-            }
-
-            return { ...obj, label }
-        })
+        return _employees.value.map(obj => ({ ...obj, label: getFullname(obj.firstname, obj.middlename, obj.lastname) }))
     })
 
     const formIsEditMode = computed( (): boolean => false)
@@ -92,6 +82,12 @@ export const canvassStore = defineStore('canvass', () => {
     const setFormData = (payload: {data: ICanvass}) => {
         console.log(_store + 'setFormData()', payload)
 
+        const requested_by = payload.data.requested_by 
+        const noted_by = payload.data.noted_by
+
+        requested_by.label = getFullname(requested_by.firstname, requested_by.middlename, requested_by.lastname)
+        noted_by.label = getFullname(noted_by.firstname, noted_by.middlename, noted_by.lastname)
+
         const items = payload.data.items.map(i => {
             const x = {} as IITemDto
             x.brand = i.brand
@@ -106,7 +102,7 @@ export const canvassStore = defineStore('canvass', () => {
             id: payload.data.id,
             date_requested: payload.data.date_requested,
             purpose: payload.data.purpose,
-            notes: payload.data.purpose,
+            notes: payload.data.notes,
             requested_by: payload.data.requested_by,
             noted_by: payload.data.noted_by,
             items: items

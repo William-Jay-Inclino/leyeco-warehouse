@@ -31,6 +31,7 @@
         <div class="row justify-content-center mt-3">
             <div class="col-lg-4 col-md-12 col-sm-12">
 
+                        
                 <div class="card shadow mb-4">
                     <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between bg-primary text-white">
                         <h6 class="m-0 font-weight-bold"> Details </h6>
@@ -60,7 +61,7 @@
                             <label>Notes</label>
                             <textarea class="form-control" rows="3" :value="notes" readonly></textarea>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group" v-if="!$module.formIsEditMode">
                             <label>Imd. Sup.</label>
                             <v-select :options="$module.employees" v-model="$module.formData.supervisor"></v-select>
                             <!-- <small class="form-text text-danger"> {{ errorMsg }} </small> -->
@@ -82,7 +83,19 @@
             </div>
 
             <div class="col-lg-6 col-md-12 col-sm-12">
-                <Particulars :items="$module.formData.items" @add-item="addItem" @remove-item="removeItem"/>
+
+                <div class="row" v-if="$module.formIsEditMode">
+                    <div class="col">
+                        <Approvers :approvers="$module.formData.approvers"/>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col">
+                        <Particulars :items="$module.formData.items" @add-item="addItem" @remove-item="removeItem"/>
+                    </div>
+                </div>
+
             </div>
         </div>
 
@@ -96,6 +109,7 @@
     import { computed, onMounted, ref } from 'vue';
     import { onBeforeRouteLeave, useRouter } from 'vue-router';
     import Breadcrumbs from '../common/components/Breadcrumbs.vue'
+    import Approvers from './components/Approvers.vue';
     import { useToast } from "vue-toastification";
     import { getFullname, routeNames } from '../common';
     import * as mock from '../__temp__/data'

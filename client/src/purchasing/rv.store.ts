@@ -3,7 +3,7 @@ import { defineStore } from 'pinia'
 import { ICreateRVDto, IFormData, IUpdateRVDto } from './dto/rv.dto'
 import { computed, ref } from 'vue'
 import { ICanvass, IRV, IStatusObject } from './entities'
-import { APPROVAL_STATUS, IBrand, IEmployee, IUnit } from '../common/entities'
+import { APPROVAL_STATUS, IApprover, IBrand, IEmployee, IRVApproverDefault, IUnit } from '../common/entities'
 import moment from 'moment'
 import { approvalStatus, convertMiddleNameToInitial } from '../common'
 import { rVService } from './rv.service'
@@ -22,7 +22,8 @@ export const rvStore = defineStore('rv', () => {
         date_requested: today,
         work_order_no: '',
         work_order_date: '',
-        items: []
+        items: [],
+        approvers: []
     }
 
     const _formErrorsInitial = {
@@ -41,6 +42,7 @@ export const rvStore = defineStore('rv', () => {
     const _brands = ref<IBrand[]>([])
     const _employees = ref<IEmployee[]>([])
     const _canvasses = ref<ICanvass[]>([])
+    const _approvers = ref<IApprover[]>([])
 
     // getters 
     const items = computed( () => {
@@ -48,8 +50,9 @@ export const rvStore = defineStore('rv', () => {
     })
     const units = computed( () => _units.value)
     const brands = computed( () => _brands.value)
-
+    const approvers = computed( () => _approvers.value)
     const canvasses = computed( () => _canvasses.value.map(obj => ({...obj, label: obj.rc_number })))
+
 
 
     const employees = computed( () => {
@@ -73,17 +76,6 @@ export const rvStore = defineStore('rv', () => {
         return false 
     })
 
-    // const formCanvassId = computed( () => formData.value.canvass ? formData.value.canvass.id : null)
-
-
-    // watchers 
-
-    // watch(formCanvassId, (val) => {
-    //     if(val && formData.value.canvass){
-    //         formData.value.items = [...formData.value.canvass.items]
-    //     }
-    // })
-
     // setters 
 
     const setUnits = (items: IUnit[]) => {
@@ -106,6 +98,28 @@ export const rvStore = defineStore('rv', () => {
         _canvasses.value = items
     }
 
+    // const setApprovers = (items: IRVApproverDefault[]) => {
+    //     console.log(_store + 'setApprovers()', items)
+
+    //     const rvApprovers = [] 
+        
+    //     for(let item of items){
+    //         const i = {} as IApprover
+    //         i.approver = item.approver 
+    //         i.approver_id = item.approver_id
+    //         i.date_approval = ''
+    //         i.id = ''
+    //         i.label = item.label
+    //         i.notes = ''
+    //         i.order = item.order
+    //         i.status = APPROVAL_STATUS.PENDING
+
+    //         rvApprovers.push(i)
+    //     }
+
+    //     _approvers.value = rvApprovers
+    // }
+
     const setFormData = (payload: {data: IRV}) => {
         console.log(_store + 'setFormData()', payload)
 
@@ -127,7 +141,8 @@ export const rvStore = defineStore('rv', () => {
             work_order_no: payload.data.work_order_no,
             work_order_date: payload.data.work_order_date,
             supervisor: payload.data.supervisor,
-            items: items
+            items: items,
+            approvers: payload.data.approvers
         }
     }
 
@@ -241,6 +256,7 @@ export const rvStore = defineStore('rv', () => {
         brands,
         employees,
         canvasses,
+        approvers,
         onCreate,
         onUpdate,
         onAddItem,

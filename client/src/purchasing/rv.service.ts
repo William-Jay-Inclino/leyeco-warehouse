@@ -60,6 +60,7 @@ class RVService{
 
         const approverSuperior = {} as IRVApproverDefault
         approverSuperior.approver_id = payload.data.supervisor.id
+        approverSuperior.approver = payload.data.supervisor
         approverSuperior.id = faker.string.uuid()
         approverSuperior.approver = payload.data.supervisor 
         approverSuperior.label = supervisorLabel
@@ -69,6 +70,7 @@ class RVService{
         const approvers = defaultApprovers.map(i => {
             const x = {} as IApprover 
             x.approver_id = i.approver_id
+            x.approver = i.approver
             // x.date_approval = this.today
             x.id = faker.string.uuid() 
             x.label = i.label 

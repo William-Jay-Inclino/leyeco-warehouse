@@ -162,7 +162,7 @@
             return 
         }
 
-        $temp.saveCanvass(submitted)
+        // $temp.saveCanvass(submitted)
         $temp.saveItems(submitted.items)
 
         $module.resetFormData()
