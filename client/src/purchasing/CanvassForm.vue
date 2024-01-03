@@ -28,62 +28,51 @@
             </div>
         </div>
 
-        <div class="row justify-content-center mt-3">
-            <div class="col-4">
+        <div class="row justify-content-center mt-5">
+            <div class="col-3">
 
-                <div class="row">
-                    <div class="col">
-                        <div class="card shadow mb-4">
-                            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between bg-primary text-white">
-                                <h6 class="m-0 font-weight-bold"> Details </h6>
-                            </div>
-                
-                            <div class="card-body">
-                                <div class="form-group">
-                                    <label>Date</label>
-                                    <input type="date" class="form-control" v-model="$module.formData.date_requested">
-                                    <!-- <small class="form-text text-danger"> {{ errorMsg }} </small> -->
-                                </div>
-                                <div class="form-group">
-                                    <label>Requested By</label>
-                                    <v-select :options="$module.employees" v-model="$module.formData.requested_by"></v-select>
-                                    <!-- <small class="form-text text-danger"> {{ errorMsg }} </small> -->
-                                </div>
-                                <div class="form-group">
-                                    <label>Noted By</label>
-                                    <v-select :options="$module.employees" v-model="$module.formData.noted_by"></v-select>
-                                    <!-- <small class="form-text text-danger"> {{ errorMsg }} </small> -->
-                                </div>
-                                <div class="form-group">
-                                    <label>Purpose</label>
-                                    <textarea class="form-control" rows="3" v-model="$module.formData.purpose"></textarea>
-                                    <!-- <small class="form-text text-danger" > {{ errorMsg }} </small> -->
-                                    <!-- <small class="text-muted">optional</small> -->
-                                </div>
-                                <div class="form-group">
-                                    <label>Notes</label>
-                                    <textarea class="form-control" rows="3" v-model="$module.formData.notes"></textarea>
-                                    <!-- <small class="form-text text-danger" > {{ errorMsg }} </small> -->
-                                    <!-- <small class="text-muted">optional</small> -->
-                                </div>
-                            </div>
-
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between bg-primary text-white">
+                        <h6 class="m-0 font-weight-bold"> Details </h6>
+                    </div>
+        
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label>Date</label>
+                            <input type="date" class="form-control" v-model="$module.formData.date_requested">
+                            <!-- <small class="form-text text-danger"> {{ errorMsg }} </small> -->
+                        </div>
+                        <div class="form-group">
+                            <label>Requested By</label>
+                            <v-select :options="$module.employees" v-model="$module.formData.requested_by"></v-select>
+                            <!-- <small class="form-text text-danger"> {{ errorMsg }} </small> -->
+                        </div>
+                        <div class="form-group">
+                            <label>Noted By</label>
+                            <v-select :options="$module.employees" v-model="$module.formData.noted_by"></v-select>
+                            <!-- <small class="form-text text-danger"> {{ errorMsg }} </small> -->
+                        </div>
+                        <div class="form-group">
+                            <label>Purpose</label>
+                            <textarea class="form-control" rows="3" v-model="$module.formData.purpose"></textarea>
+                            <!-- <small class="form-text text-danger" > {{ errorMsg }} </small> -->
+                            <!-- <small class="text-muted">optional</small> -->
+                        </div>
+                        <div class="form-group">
+                            <label>Notes</label>
+                            <textarea class="form-control" rows="3" v-model="$module.formData.notes"></textarea>
+                            <!-- <small class="form-text text-danger" > {{ errorMsg }} </small> -->
+                            <!-- <small class="text-muted">optional</small> -->
                         </div>
                     </div>
-                </div>
 
+                </div>
 
 
             </div>
 
-            <div class="col-7">
-                <div class="row">
-                    <div class="col">
-
-                        <Particulars :items="$module.formData.items" @add-item="addItem" @remove-item="removeItem"/>
-
-                    </div>
-                </div>
+            <div class="col-8">
+                <Particulars :items="$module.formData.items" @add-item="addItem" @remove-item="removeItem"/>
             </div>
         </div>
 

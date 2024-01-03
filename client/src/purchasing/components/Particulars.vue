@@ -22,7 +22,7 @@
                         <tr v-for="item, i in items">
                             <td> {{ i + 1 }}. </td>
                             <td>
-                                <textarea class="form-control" rows="3" v-model="item.description"></textarea>
+                                <input type="text" class="form-control" rows="3" v-model="item.description">
                             </td>
                             <td>
                                 <select class="form-control" v-model="item.brand">
@@ -42,7 +42,7 @@
                             <td>
                                 <input type="number" class="form-control" v-model="item.quantity">
                             </td>
-                            <td>
+                            <td class="text-center">
                                 <button @click="onRemoveItem(i)" class="btn btn-light">
                                     <i class="fas fa-fw fa-trash text-danger"></i> 
                                 </button>

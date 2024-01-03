@@ -19,8 +19,8 @@
             </div>
         </div>
 
-        <div class="row justify-content-center mt-5">
-            <div class="col-10">
+        <div v-if="!$module.formIsEditMode" class="row justify-content-center mt-5">
+            <div class="col-11">
                 <div class="float-right">
                     <button @click="onSubmit(1)" type="button" class="btn btn-success form-btn ml-2">Submit & Finish</button>
                     <button @click="onSubmit(2)" type="button" class="btn btn-primary form-btn ml-2">Submit & Add Again</button>
@@ -28,8 +28,8 @@
             </div>
         </div>
 
-        <div class="row justify-content-center mt-3">
-            <div class="col-lg-4 col-md-12 col-sm-12">
+        <div class="row justify-content-center mt-5">
+            <div class="col-3">
 
                         
                 <div class="card shadow mb-4">
@@ -82,23 +82,33 @@
 
             </div>
 
-            <div class="col-lg-6 col-md-12 col-sm-12">
+            <div v-if="!$module.formIsEditMode" class="col-8">
+                <Particulars :items="$module.formData.items" @add-item="addItem" @remove-item="removeItem"/>
+            </div>
 
-                <div class="row" v-if="$module.formIsEditMode">
-                    <div class="col">
-                        <Approvers :approvers="$module.formData.approvers"/>
-                    </div>
-                </div>
+            <div class="col-lg-7 col-md-12 col-sm-12" v-if="$module.formIsEditMode">
 
-                <div class="row">
-                    <div class="col">
-                        <Particulars :items="$module.formData.items" @add-item="addItem" @remove-item="removeItem"/>
-                    </div>
+                <div class="col">
+                    <Approvers :approvers="$module.formData.approvers"/>
                 </div>
 
             </div>
         </div>
 
+        <div v-if="$module.formIsEditMode" class="row justify-content-center mt-3">
+            <div class="col-lg-10">
+                <Particulars :items="$module.formData.items" @add-item="addItem" @remove-item="removeItem"/>
+            </div>
+        </div>
+
+        <div v-if="$module.formIsEditMode" class="row justify-content-center mt-3">
+            <div class="col-11">
+                <div class="text-center">
+                    <button @click="onSubmit(1)" type="button" class="btn btn-success form-btn ml-2">Submit & Finish</button>
+                    <button @click="onSubmit(2)" type="button" class="btn btn-primary form-btn ml-2">Submit & Add Again</button>
+                </div>
+            </div>
+        </div>
 
   </div>
 
