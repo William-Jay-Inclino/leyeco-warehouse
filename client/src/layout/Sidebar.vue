@@ -37,7 +37,7 @@
                     <router-link :to="{name: routeNames.purchasing_canvass}" class="collapse-item">
                         <span class="ml-2">JO</span>
                     </router-link>
-                    <router-link :to="{name: routeNames.purchasing_canvass}" class="collapse-item">
+                    <router-link :to="{name: routeNames.purchasing_meqs}" class="collapse-item">
                         <span class="ml-2">MEQS</span>
                     </router-link>
                     <router-link :to="{name: routeNames.purchasing_canvass}" class="collapse-item">

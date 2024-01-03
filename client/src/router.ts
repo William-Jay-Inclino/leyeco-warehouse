@@ -45,6 +45,18 @@ const routes = [
         component: () => import('./purchasing/RVForm.vue'),
     },
 
+    {
+        path: '/purchasing/meqs',
+        name: routeNames.purchasing_meqs,
+        component: () => import('./purchasing/MEQS.vue'),
+    },
+
+    {
+        path: '/purchasing/meqs/form',
+        name: routeNames.purchasing_meqs_form,
+        component: () => import('./purchasing/MEQSFORM.vue'),
+    },
+
 ]
 
 

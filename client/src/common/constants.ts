@@ -8,6 +8,8 @@ export const routeNames = {
     purchasing_canvass_form: 'purchasing_canvass_form.route',
     purchasing_rv: 'purchasing_rv.route',
     purchasing_rv_form: 'purchasing_rv_form.route',
+    purchasing_meqs: 'purchasing_meqs.route',
+    purchasing_meqs_form: 'purchasing_meqs_form.route',
 }
 
 export const supervisorLabel = 'Imd. Sup.'
