@@ -142,6 +142,8 @@ export interface IRV {
     items: IItem[]
     approvers: IApprover[]
     is_cancelled: boolean
+    purpose: string
+    notes: string
 
     // fields that are set programmatically
 
@@ -164,6 +166,8 @@ export interface IJO {
     items: IItem[]
     approvers: IApprover[]
     is_cancelled: boolean
+    purpose: string
+    notes: string
 
     // fields that are set programmatically
 
@@ -185,6 +189,8 @@ export interface ISPR {
     items: IItem[]
     approvers: IApprover[]
     is_cancelled: boolean
+    purpose: string
+    notes: string
 
     // fields that are set programmatically
 
@@ -196,33 +202,34 @@ export interface IMEQS {
     jo_id?: string
     rv_id?: string
     spr_id?: string
-    meqs_number: string 
     reference_type: REQUEST_TYPES
     meqs_date: string
+    purpose: string
 }
 
 export interface IPO {
     id: string 
     po_number: string 
-    meqs_number: string 
+    meqs_id: string
+    meqs: IMEQS  
     supplier_id: string 
     supplier: ISupplier 
     po_date: string 
     payment_terms: string 
 }
 
-export interface IPOItems {
-    id: string 
-    po_id: string 
-    po: IPO 
-    description: string 
-    brand_id: string | null
-    brand: IBrand | null
-    unit_id: string 
-    unit: IUnit 
-    quantity: number 
-    price: number 
-}
+// export interface IPOItems {
+//     id: string 
+//     po_id: string 
+//     po: IPO 
+//     description: string 
+//     brand_id: string | null
+//     brand: IBrand | null
+//     unit_id: string 
+//     unit: IUnit 
+//     quantity: number 
+//     price: number 
+// }
 
 export interface IStatusObject {
     value: APPROVAL_STATUS | string,
@@ -238,12 +245,23 @@ export interface IItem {
     rv_id?: string | null
     rv?: IRV
     spr_id?: string | null
+    meqs_id?: string | null
+    po_id?: string | null
     description: string
     brand_id: string | null
     brand: IBrand | null
     unit_id: string
     unit: IUnit 
     quantity: number 
+}
+
+export interface ISupplierItem {
+    id: string 
+    item_id: string 
+    item: IItem 
+    price: number 
+    supplier_id: string 
+    supplier: ISupplier
 }
 
 

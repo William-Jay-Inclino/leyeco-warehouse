@@ -11,6 +11,8 @@ export interface IFormData{
     work_order_date: string 
     items: IITemDto[]
     approvers: IApprover[]
+    purpose: string 
+    notes: string 
 }
 
 export interface ICreateRVDto {
@@ -20,6 +22,8 @@ export interface ICreateRVDto {
     work_order_date: string 
     supervisor: IEmployee
     items: IITemDto[]
+    purpose: string 
+    notes: string
 }
 
 export interface IUpdateRVDto{

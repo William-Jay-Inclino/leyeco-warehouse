@@ -55,11 +55,11 @@
                         </div>
                         <div class="form-group">
                             <label>Purpose</label>
-                            <textarea class="form-control" rows="3" :value="purpose" readonly></textarea>
+                            <textarea class="form-control" rows="3" v-model="$module.formData.purpose"></textarea>
                         </div>
                         <div class="form-group">
                             <label>Notes</label>
-                            <textarea class="form-control" rows="3" :value="notes" readonly></textarea>
+                            <textarea class="form-control" rows="3" v-model="$module.formData.notes"></textarea>
                         </div>
                         <div class="form-group" v-if="!$module.formIsEditMode">
                             <label>Imd. Sup.</label>
@@ -175,27 +175,6 @@
         
     })
 
-    const purpose = computed( () => {
-
-        if($module.formData.canvass){
-            return $module.formData.canvass.purpose
-        }
-
-        return ''
-
-    })
-
-    const notes = computed( () => {
-
-        if($module.formData.canvass){
-            return $module.formData.canvass.notes
-        }
-
-        return ''
-
-    })
-
-
     const onSubmit = async(action: number) => {
         console.log('onSubmit()')
 
@@ -247,7 +226,11 @@
 
     const onChangeRcNo = () => {
         console.log('onChangeRcNo()')
+
+        
         if($module.formData.canvass){
+            $module.formData.purpose = $module.formData.canvass.purpose
+            $module.formData.notes = $module.formData.canvass.notes
             $module.formData.items = [...$module.formData.canvass.items]
         }
     }

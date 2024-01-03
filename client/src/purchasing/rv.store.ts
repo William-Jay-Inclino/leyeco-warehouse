@@ -22,7 +22,9 @@ export const rvStore = defineStore('rv', () => {
         work_order_no: '',
         work_order_date: '',
         items: [],
-        approvers: []
+        approvers: [],
+        purpose: '',
+        notes: '',
     }
 
     const _formErrorsInitial = {
@@ -141,7 +143,9 @@ export const rvStore = defineStore('rv', () => {
             work_order_date: payload.data.work_order_date,
             supervisor: payload.data.supervisor,
             items: items,
-            approvers: payload.data.approvers
+            approvers: payload.data.approvers,
+            purpose: payload.data.purpose,
+            notes: payload.data.notes,
         }
     }
 
