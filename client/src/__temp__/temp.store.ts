@@ -1,10 +1,8 @@
 
 import { defineStore } from 'pinia'
-import { IApprover, IBrand, IClassification, IDepartment, IDivision, IEmployee, IJO, IJOApproverDefault, IMEQS, IMEQSApproverDefault, IPO, IPOApproverDefault, IPOItems, ISPR, ISPRApproverDefault, ISupplier, IUnit } from '../common/entities';
+import { IApprover, IBrand, ICanvass, IClassification, IDepartment, IDivision, IEmployee, IItem, IJO, IJOApproverDefault, IMEQS, IMEQSApproverDefault, IPO, IPOApproverDefault, IPOItems, IRV, ISPR, ISPRApproverDefault, ISupplier, IUnit } from '../common/entities';
 import { ref } from 'vue';
 import * as mock from './data';
-import { ICanvass, IRV } from '../purchasing/entities';
-import { IItem } from '../common/entities/item.entity';
 
 export const tempStore = defineStore('temp', () => {
 

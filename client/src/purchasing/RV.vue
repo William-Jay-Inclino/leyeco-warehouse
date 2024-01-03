@@ -103,8 +103,8 @@ import TablePerPage from './components/TableSelectPerPage.vue'
 import { routeNames } from '../common';
 import { rvStore } from './rv.store';
 import { getFullname } from '../common'
-import { IRV } from './entities';
 import { useRouter } from 'vue-router';
+import { IRV } from '../common/entities';
 
 const $module = rvStore()
 // const toast = useToast();

@@ -1,9 +1,7 @@
 import { rv_default_approvers } from "../__temp__/data";
 import { supervisorLabel } from "../common";
-import { APPROVAL_STATUS, IApprover, IRVApproverDefault } from "../common/entities";
-import { IItem } from "../common/entities/item.entity";
+import { APPROVAL_STATUS, IApprover, IItem, IRV, IRVApproverDefault } from "../common/entities";
 import { ICreateRVDto } from "./dto/rv.dto";
-import { IRV } from "./entities"
 import { faker } from '@faker-js/faker';
 // import moment from 'moment'
 // import * as mock from '../__temp__/data'

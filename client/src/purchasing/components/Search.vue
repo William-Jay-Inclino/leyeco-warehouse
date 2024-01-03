@@ -27,7 +27,7 @@
 
 <script setup lang="ts">
     import { computed, ref } from 'vue';
-    import { SearchFieldEnum } from '../entities';
+import { SearchFieldEnum } from '../entities/purchasing.enums';
     // import { SearchFieldEnum, teamService, teamStore } from '..';
     
 

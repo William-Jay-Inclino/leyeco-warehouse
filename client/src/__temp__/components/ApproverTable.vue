@@ -65,8 +65,7 @@
 
     import { tempStore } from '../temp.store';
     import { rvStore } from '../../purchasing/rv.store';
-    import { IApprover, IJO, IMEQS, IPO, ISPR } from '../../common/entities';
-    import { IRV } from '../../purchasing/entities';
+    import { IApprover, IJO, IMEQS, IPO, IRV, ISPR } from '../../common/entities';
 
     const $data = tempStore()
     const $rv = rvStore()

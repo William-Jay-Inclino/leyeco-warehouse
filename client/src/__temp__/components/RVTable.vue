@@ -43,7 +43,7 @@
 
     import { tempStore } from '../temp.store';
     import { rvStore } from '../../purchasing/rv.store';
-    import { IRV } from '../../purchasing/entities';
+    import { IRV } from '../../common/entities/common.entities';
 
     const $data = tempStore()
     const $rv = rvStore()

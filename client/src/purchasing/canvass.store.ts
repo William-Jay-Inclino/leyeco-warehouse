@@ -2,10 +2,9 @@
 import { defineStore } from 'pinia'
 import { ICreateCanvassDto, IFormData, IUpdateCanvassDto } from './dto/canvass.dto'
 import { computed, ref } from 'vue'
-import { ICanvass } from './entities'
-import { IBrand, IEmployee, IUnit } from '../common/entities'
+import { IBrand, ICanvass, IEmployee, IUnit } from '../common/entities'
 import moment from 'moment'
-import { convertMiddleNameToInitial, getFullname } from '../common'
+import { getFullname } from '../common'
 import { canvassService } from './canvass.service'
 import { IITemDto } from '../common/dto/IItem.dto'
 

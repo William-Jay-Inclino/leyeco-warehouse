@@ -1,6 +1,5 @@
-import { IItem } from "../common/entities/item.entity";
+import { ICanvass, IItem } from "../common/entities";
 import { ICreateCanvassDto } from "./dto/canvass.dto";
-import { ICanvass } from "./entities"
 import { faker } from '@faker-js/faker';
 
 class CanvassService{

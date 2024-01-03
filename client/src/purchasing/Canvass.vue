@@ -108,10 +108,10 @@ import TablePerPage from './components/TableSelectPerPage.vue'
 import { routeNames } from '../common';
 import { canvassStore } from './canvass.store';
 import { getFullname } from '../common'
-import { ICanvass } from './entities';
 import { useRouter } from 'vue-router';
 
 import * as mock from '../__temp__/data'
+import { ICanvass } from "../common/entities";
 
 const $module = canvassStore()
 const toast = useToast();

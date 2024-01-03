@@ -1,6 +1,5 @@
 import { IITemDto } from "../../common/dto/IItem.dto"
-import { IApprover, IEmployee } from "../../common/entities"
-import { ICanvass } from "../entities"
+import { IApprover, ICanvass, IEmployee } from "../../common/entities"
 
 export interface IFormData{
     id?: string
