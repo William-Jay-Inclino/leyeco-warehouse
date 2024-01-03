@@ -24,8 +24,8 @@
 		</div>
 
 		<ScrollToTop />
-		<MockDataBtn />
-		<MockDataModal />
+		<!-- <MockDataBtn />
+		<MockDataModal /> -->
 
 	</div>
 
@@ -37,13 +37,13 @@
 	import Navbar from './layout/Navbar.vue';
 	import SidebarDispatcher from './layout/Sidebar.vue';
 	import ScrollToTop from './layout/ScrollToTop.vue'
-	import MockDataBtn from './__temp__/components/MockDataBtn.vue'
-	import MockDataModal from './__temp__/components/MockDataModal.vue'
-	import { tempStore } from './__temp__/temp.store';
+	// import MockDataBtn from './__temp__/components/MockDataBtn.vue'
+	// import MockDataModal from './__temp__/components/MockDataModal.vue'
+	// import { tempStore } from './__temp__/temp.store';
 
-	const $temp = tempStore()
+	// const $temp = tempStore()
 
-	console.log('$temp', $temp)
+	// console.log('$temp', $temp)
 
 
 </script>

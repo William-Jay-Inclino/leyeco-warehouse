@@ -20,7 +20,7 @@
         </div>
 
         <div class="row justify-content-center mt-5">
-            <div class="col-10">
+            <div class="col-11">
                 <div class="float-right">
                     <button @click="onSubmit(1)" type="button" class="btn btn-success form-btn ml-2">Submit & Finish</button>
                     <button @click="onSubmit(2)" type="button" class="btn btn-primary form-btn ml-2">Submit & Add Again</button>
@@ -76,7 +76,7 @@
 
             </div>
 
-            <div class="col-6">
+            <div class="col-7">
                 <div class="row">
                     <div class="col">
 
@@ -103,12 +103,10 @@
     import { canvassStore } from './canvass.store';
     import { IITemDto } from '../common/dto/IItem.dto';
     import Particulars from './components/Particulars.vue';
-    import { tempStore } from '../__temp__/temp.store';
 
     const toast = useToast();
     const router = useRouter()
     const $module = canvassStore()
-    const $temp = tempStore()
 
     const _units = mock.units
     const _brands = mock.brands 
@@ -162,9 +160,6 @@
             return 
         }
 
-        // $temp.saveCanvass(submitted)
-        $temp.saveItems(submitted.items)
-
         $module.resetFormData()
         toast.success(moduleLabel + ' successfully saved!')
 
@@ -176,16 +171,6 @@
 
     const addItem = (data: IITemDto) => $module.onAddItem({data})
     const removeItem = (indx: number) => $module.onRemoveItem({indx})
-
-    // const onAddItem = () => {
-    //     const item = {} as IITemDto
-    //     item.brand = null 
-    //     item.description = ''
-    //     item.quantity = 0
-    //     item.unit = null
-    //     $module.onAddItem({data: item})
-    // }
-
 
     // const onCancel = () => {
     //     // $module.resetFormData()

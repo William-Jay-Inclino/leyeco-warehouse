@@ -117,12 +117,10 @@
     import { IITemDto } from '../common/dto/IItem.dto';
     import { ICreateRVDto } from './dto/rv.dto';
     import Particulars from './components/Particulars.vue';
-    import { tempStore } from '../__temp__/temp.store';
 
     const toast = useToast();
     const router = useRouter()
     const $module = rvStore()
-    const $temp = tempStore()
 
     $module.setUnits(mock.units)
     $module.setBrands(mock.brands)
@@ -198,6 +196,8 @@
         data.supervisor = formData.supervisor
         data.work_order_date = formData.work_order_date
         data.work_order_no = formData.work_order_no
+        data.purpose = formData.purpose 
+        data.notes = formData.notes
 
 
         const submitted = await $module.onCreate({data})
@@ -206,11 +206,6 @@
             toast.error('Failed to save ' + moduleLabel)
             return 
         }
-
-        // add to temp store
-        $temp.saveApprovers(submitted.approvers)
-        $temp.saveRv(submitted)
-        $temp.saveItems(submitted.items)
 
         $module.resetFormData()
         toast.success(moduleLabel + ' successfully saved!')
@@ -231,7 +226,21 @@
         if($module.formData.canvass){
             $module.formData.purpose = $module.formData.canvass.purpose
             $module.formData.notes = $module.formData.canvass.notes
-            $module.formData.items = [...$module.formData.canvass.items]
+            // $module.formData.items = [...$module.formData.canvass.items]
+
+            const itemDtos = [...$module.formData.canvass.items].map(i => {
+                const x = {} as IITemDto
+                x.brand = i.item.brand
+                x.description = i.item.description
+                x.id = i.item.id
+                x.quantity = i.item.quantity
+                x.supplier_items = i.item.supplier_items
+                x.unit = i.item.unit
+
+                return x
+            })
+
+            $module.formData.items = itemDtos
         }
     }
 

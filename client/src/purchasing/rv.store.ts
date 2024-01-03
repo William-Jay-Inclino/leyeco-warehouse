@@ -2,7 +2,7 @@
 import { defineStore } from 'pinia'
 import { ICreateRVDto, IFormData, IUpdateRVDto } from './dto/rv.dto'
 import { computed, ref } from 'vue'
-import { APPROVAL_STATUS, IApprover, IBrand, ICanvass, IEmployee, IRV, IStatusObject, IUnit } from '../common/entities'
+import { APPROVAL_STATUS, IBrand, ICanvass, IEmployee, IRV, IRVApprover, IStatusObject, IUnit } from '../common/entities'
 import moment from 'moment'
 import { approvalStatus, convertMiddleNameToInitial } from '../common'
 import { rVService } from './rv.service'
@@ -43,7 +43,7 @@ export const rvStore = defineStore('rv', () => {
     const _brands = ref<IBrand[]>([])
     const _employees = ref<IEmployee[]>([])
     const _canvasses = ref<ICanvass[]>([])
-    const _approvers = ref<IApprover[]>([])
+    const _approvers = ref<IRVApprover[]>([])
 
     // getters 
     const items = computed( () => {
@@ -126,11 +126,11 @@ export const rvStore = defineStore('rv', () => {
 
         const items = payload.data.items.map(i => {
             const x = {} as IITemDto
-            x.brand = i.brand
-            x.description = i.description
+            x.brand = i.item.brand
+            x.description = i.item.description
             x.id = i.id
-            x.quantity = i.quantity
-            x.unit = i.unit
+            x.quantity = i.item.quantity
+            x.unit = i.item.unit
             return x
         }) 
 

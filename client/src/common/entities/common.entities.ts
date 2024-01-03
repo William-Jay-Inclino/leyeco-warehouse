@@ -1,19 +1,30 @@
 import { APPROVAL_STATUS, DEPARTMENT_STATUS, DIVISION_STATUS, EMPLOYEE_POSITION, REQUEST_TYPES } from "./common.enums";
 
-export interface ICanvass {
-    id: string
-    rc_number: string
-    date_requested: string
-    purpose: string
-    notes: string
-    requested_by_id: string
-    requested_by: IEmployee
-    noted_by_id: string 
-    noted_by: IEmployee 
-    items: IItem[]
+
+// ============================= START DATA MANAGEMENT =============================
+
+export interface ISupplier { 
+    id: string 
+    name: string 
+    contact: string
 }
 
-export interface IEmployee { //done
+export interface IDivision { 
+    id: string
+    code: string
+    name: string
+    status: DIVISION_STATUS
+}
+
+export interface IDepartment { 
+    id: string
+    division_id: string
+    code: string
+    name: string
+    status: DEPARTMENT_STATUS
+}
+
+export interface IEmployee { 
     id: string 
     department_id: string
     firstname: string 
@@ -26,25 +37,19 @@ export interface IEmployee { //done
     label?: string 
 }
 
-export interface ISupplier { // done
-    id: string 
-    name: string 
-    contact: string
+export interface IClassification { 
+    id: string
+    name: string
 }
 
-export interface IDepartment { // done
+export interface IUnit { 
     id: string
-    division_id: string
-    code: string
     name: string
-    status: DEPARTMENT_STATUS
 }
 
-export interface IDivision { // done
+export interface IBrand { 
     id: string
-    code: string
     name: string
-    status: DIVISION_STATUS
 }
 
 export interface IVehicle {
@@ -53,105 +58,103 @@ export interface IVehicle {
     plate_number: string
 }
 
-export interface IClassification { // done
+
+// ============================= END DATA MANAGEMENT =============================
+
+
+
+
+
+
+
+
+// ============================= START SETTINGS =============================
+
+export interface IJOApproverDefault { 
+    id: string 
+    approver_id: string 
+    approver: IEmployee
+    label: string
+    order: number
+}
+
+export interface IRVApproverDefault { 
+    id: string 
+    approver_id: string 
+    approver: IEmployee
+    label: string
+    order: number
+}
+
+export interface ISPRApproverDefault { 
+    id: string 
+    approver_id: string 
+    approver: IEmployee
+    label: string
+    order: number
+}
+
+export interface IMEQSApproverDefault { 
+    id: string 
+    approver_id: string 
+    approver: IEmployee
+    label: string
+    order: number
+}
+
+
+export interface IPOApproverDefault { 
+    id: string 
+    approver_id: string 
+    approver: IEmployee
+    label: string
+    order: number
+}
+// ============================= END SETTINGS =============================
+
+
+
+
+
+
+
+// ============================= START PURCHASING =============================
+export interface ICanvass {
     id: string
-    name: string
-}
-
-export interface IUnit { // done
-    id: string
-    name: string
-}
-
-export interface IBrand { // done
-    id: string
-    name: string
-}
-
-export interface IApprover { // done
-    id: string 
-    approver_id: string 
-    approver: IEmployee
-    jo_id?: string 
-    jo?: IJO
-    rv_id?: string
-    rv?: IRV 
-    spr_id?: string
-    spr?: ISPR 
-    meqs_id?: string 
-    meqs: IMEQS
-    po_id?: string
-    po?: IPO 
-    date_approval: string
-    notes: string 
-    status: APPROVAL_STATUS 
-    label: string 
-    order: number
-}
-
-
-export interface IJOApproverDefault { // done
-    id: string 
-    approver_id: string 
-    approver: IEmployee
-    label: string
-    order: number
-}
-
-export interface IRVApproverDefault { // done
-    id: string 
-    approver_id: string 
-    approver: IEmployee
-    label: string
-    order: number
-}
-
-export interface ISPRApproverDefault { // done
-    id: string 
-    approver_id: string 
-    approver: IEmployee
-    label: string
-    order: number
-}
-
-export interface IMEQSApproverDefault { // done
-    id: string 
-    approver_id: string 
-    approver: IEmployee
-    label: string
-    order: number
-}
-
-
-export interface IPOApproverDefault { // done
-    id: string 
-    approver_id: string 
-    approver: IEmployee
-    label: string
-    order: number
-}
-
-export interface IRV {
-    id: string
-    canvass_id: string
-    canvass: ICanvass
-    supervisor_id: string 
-    supervisor: IEmployee
-    classification_id?: string
-    classification: IClassification | null
-    rv_number: string
+    rc_number: string
     date_requested: string
-    work_order_no: string 
-    work_order_date: string 
-    items: IItem[]
-    approvers: IApprover[]
-    is_cancelled: boolean
     purpose: string
     notes: string
+    requested_by_id: string
+    requested_by: IEmployee
+    noted_by_id: string 
+    noted_by: IEmployee 
+    items: ICanvassItem[]
+}
 
-    // fields that are set programmatically
+export interface IItem {
+    id: string
+    description: string
+    brand_id: string | null
+    brand: IBrand | null
+    unit_id: string
+    unit: IUnit 
+    quantity: number 
+    supplier_items?: ISupplierItem[]
+}
 
-    statusObj: IStatusObject
+export interface ICanvassItem {
+    id: string 
+    item_id: string 
+    item: IItem
+}
+
+export interface ISupplierItem {
+    id: string 
+    item_id: string 
+    item: IItem
+    supplier_id: string 
+    supplier: ISupplier
 }
 
 export interface IJO {
@@ -167,8 +170,8 @@ export interface IJO {
     equipment: string
     department_id: string,
     department: IDepartment,
-    items: IItem[]
-    approvers: IApprover[]
+    items: IJOItem[]
+    approvers: IJOApprover[]
     is_cancelled: boolean
     purpose: string
     notes: string
@@ -176,6 +179,67 @@ export interface IJO {
     // fields that are set programmatically
 
     statusObj: IStatusObject
+}
+
+export interface IJOItem {
+    id: string 
+    item_id: string 
+    item: IItem
+}
+
+export interface IJOApprover { 
+    id: string 
+    approver_id: string 
+    approver: IEmployee
+    jo_id: string 
+    jo: IJO
+    date_approval: string
+    notes: string 
+    status: APPROVAL_STATUS 
+    label: string 
+    order: number
+}
+
+export interface IRV {
+    id: string
+    canvass_id: string
+    canvass: ICanvass
+    supervisor_id: string 
+    supervisor: IEmployee
+    classification_id?: string
+    classification: IClassification | null
+    rv_number: string
+    date_requested: string
+    work_order_no: string 
+    work_order_date: string 
+    items: IRVItem[]
+    approvers: IRVApprover[]
+    is_cancelled: boolean
+    purpose: string
+    notes: string
+
+    // fields that are set programmatically
+
+    statusObj: IStatusObject
+}
+
+export interface IRVItem {
+    id: string 
+    item_id: string 
+    item: IItem
+}
+
+export interface IRVApprover { 
+    id: string 
+    approver_id: string 
+    approver: IEmployee
+    rv_id: string 
+    rv: IRV
+    date_approval: string
+    notes: string 
+    status: APPROVAL_STATUS 
+    label: string 
+    order: number
 }
 
 export interface ISPR {
@@ -190,8 +254,8 @@ export interface ISPR {
     date_requested: string
     vehicle_id: string
     vehicle: IVehicle
-    items: IItem[]
-    approvers: IApprover[]
+    items: ISPRItem[]
+    approvers: ISPRApprover[]
     is_cancelled: boolean
     purpose: string
     notes: string
@@ -201,22 +265,56 @@ export interface ISPR {
     statusObj: IStatusObject
 }
 
+export interface ISPRItem {
+    id: string 
+    item_id: string 
+    item: IItem
+}
+
+export interface ISPRApprover { 
+    id: string 
+    approver_id: string 
+    approver: IEmployee
+    spr_id: string 
+    spr: ISPR
+    date_approval: string
+    notes: string 
+    status: APPROVAL_STATUS 
+    label: string 
+    order: number
+}
+
 export interface IMEQS {
     id: string
-    jo_id?: string
-    jo: IJO
-    rv_id?: string
-    rv: IRV 
-    spr_id?: string
-    spr: ISPR
+    canvass_id: string 
+    canvass: ICanvass
     meqs_number: string
     reference_type: REQUEST_TYPES
     meqs_date: string
     purpose: string
     is_cancelled: boolean
 
-    items: IItem[]
-    approvers: IApprover[]
+    items: IMEQSItem[]
+    approvers: IMEQSApprover[]
+}
+
+export interface IMEQSItem {
+    id: string 
+    item_id: string 
+    item: IItem
+}
+
+export interface IMEQSApprover { 
+    id: string 
+    approver_id: string 
+    approver: IEmployee
+    meqs_id: string 
+    meqs: IMEQS
+    date_approval: string
+    notes: string 
+    status: APPROVAL_STATUS 
+    label: string 
+    order: number
 }
 
 export interface IPO {
@@ -230,98 +328,9 @@ export interface IPO {
     payment_terms: string 
 }
 
-// export interface IPOItems {
-//     id: string 
-//     po_id: string 
-//     po: IPO 
-//     description: string 
-//     brand_id: string | null
-//     brand: IBrand | null
-//     unit_id: string 
-//     unit: IUnit 
-//     quantity: number 
-//     price: number 
-// }
-
 export interface IStatusObject {
     value: APPROVAL_STATUS | string,
     label: string,
     color: string,
 }
 
-export interface IItem {
-    id: string
-    canvass_id?: string | null
-    canvass?: ICanvass
-    jo_id?: string | null
-    jo?: IJO
-    rv_id?: string | null
-    rv?: IRV
-    spr_id?: string | null
-    spr?: ISPR | null
-    meqs_id?: string | null
-    meqs?: IMEQS | null
-    po_id?: string | null
-    po?: IPO | null
-    description: string
-    brand_id: string | null
-    brand: IBrand | null
-    unit_id: string
-    unit: IUnit 
-    quantity: number 
-    supplier_items?: ISupplierItem[]
-}
-
-export interface ISupplierItem {
-    id: string 
-    item_id: string 
-    item: IItem 
-    price: number 
-    supplier_id: string 
-    supplier: ISupplier
-}
-
-
-export interface IRV {
-    id: string
-    canvass_id: string
-    canvass: ICanvass
-    supervisor_id: string 
-    supervisor: IEmployee
-    classification_id?: string
-    classification: IClassification | null
-    rv_number: string
-    date_requested: string
-    work_order_no: string 
-    work_order_date: string 
-    items: IItem[]
-    approvers: IApprover[]
-    is_cancelled: boolean
-
-    // fields that are set programmatically
-
-    statusObj: IStatusObject
-}
-
-
-export interface IStatusObject {
-    value: APPROVAL_STATUS | string,
-    label: string,
-    color: string,
-}
-
-export interface IItem {
-    id: string
-    canvass_id?: string | null
-    canvass?: ICanvass
-    jo_id?: string | null
-    rv_id?: string | null
-    rv?: IRV
-    spr_id?: string | null
-    description: string
-    brand_id: string | null
-    brand: IBrand | null
-    unit_id: string
-    unit: IUnit 
-    quantity: number 
-}

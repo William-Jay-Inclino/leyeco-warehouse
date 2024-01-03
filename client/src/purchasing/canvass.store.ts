@@ -89,11 +89,11 @@ export const canvassStore = defineStore('canvass', () => {
 
         const items = payload.data.items.map(i => {
             const x = {} as IITemDto
-            x.brand = i.brand
-            x.description = i.description
+            x.brand = i.item.brand
+            x.description = i.item.description
             x.id = i.id
-            x.quantity = i.quantity
-            x.unit = i.unit
+            x.quantity = i.item.quantity
+            x.unit = i.item.unit
             return x
         }) 
 
@@ -104,7 +104,7 @@ export const canvassStore = defineStore('canvass', () => {
             notes: payload.data.notes,
             requested_by: payload.data.requested_by,
             noted_by: payload.data.noted_by,
-            items: items
+            items
         }
     }
 

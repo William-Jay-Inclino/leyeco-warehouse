@@ -1,5 +1,5 @@
 import { faker } from '@faker-js/faker';
-import { DEPARTMENT_STATUS, DIVISION_STATUS, EMPLOYEE_POSITION, IApprover, IBrand, ICanvass, IClassification, IDepartment, IDivision, IEmployee, IItem, IJO, IJOApproverDefault, IMEQS, IMEQSApproverDefault, IPO, IPOApproverDefault, IPOItems, IRV, IRVApproverDefault, ISPR, ISPRApproverDefault, ISupplier, IUnit } from '../common/entities';
+import { DEPARTMENT_STATUS, DIVISION_STATUS, EMPLOYEE_POSITION, IBrand, ICanvass, ICanvassItem, IClassification, IDepartment, IDivision, IEmployee, IItem, IJO, IJOApprover, IJOApproverDefault, IMEQS, IMEQSApproverDefault, IPO, IPOApproverDefault, IRV, IRVApproverDefault, ISPR, ISPRApproverDefault, ISupplier, IUnit } from '../common/entities';
 
 export const suppliers: ISupplier[] = [
     { 
@@ -446,17 +446,22 @@ const canvass: ICanvass = {
     items: []
 }
 
-const canvassItems: IItem[] = [
+
+const itemId = faker.string.uuid() 
+
+const canvassItems: ICanvassItem[] = [
     {
         id: faker.string.uuid(),
-        canvass_id: canvassId,
-        canvass,
-        description: 'Item 1',
-        brand_id: brands[0].id,
-        brand: brands[0],
-        unit_id: units[0].id,
-        unit: units[0],
-        quantity: 5,
+        item_id: itemId,
+        item: {
+            id: itemId,
+            description: 'Item 1',
+            brand_id: brands[0].id,
+            brand: brands[0],
+            unit_id: units[0].id,
+            unit: units[0],
+            quantity: 5,
+        },
     }
 ]
 
@@ -479,8 +484,7 @@ export const JOs: IJO[] = []
 export const SPRs: ISPR[] = []
 export const MEQSs: IMEQS[] = []
 export const POs: IPO[] = []
-export const POItems: IPOItems[] = []
 
-export const approvers: IApprover[] = []
+export const joApprovers: IJOApprover[] = []
 
-export const items: IItem[] = [...canvassItems]
+// export const items: IItem[] = [...canvassItems]

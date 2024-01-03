@@ -1,4 +1,4 @@
-import { ICanvass, IItem } from "../common/entities";
+import { ICanvass, ICanvassItem, IItem } from "../common/entities";
 import { ICreateCanvassDto } from "./dto/canvass.dto";
 import { faker } from '@faker-js/faker';
 
@@ -34,19 +34,32 @@ class CanvassService{
         item.requested_by = payload.data.requested_by!
         item.requested_by_id = payload.data.requested_by!.id
         
-        item.items = payload.data.items.map(i => {
+        const items = payload.data.items.map(i => {
+
+            const itemId = faker.string.uuid()
+
             const x = {} as IItem
             x.brand_id = i.brand ? i.brand.id : null
             x.brand = i.brand || null
-            x.canvass_id = canvassId
-            x.canvass = item 
             x.description = i.description
-            x.id = faker.string.uuid()
+            x.id = itemId
             x.quantity = i.quantity
             x.unit_id = i.unit!.id
             x.unit = i.unit!
             return x
         }) 
+
+        const canvassItems: ICanvassItem[] = []
+
+        items.forEach(i => {
+            canvassItems.push({
+                id: faker.string.uuid(),
+                item_id: i.id,
+                item: i
+            })
+        })
+
+        item.items = canvassItems
 
         this.ctr ++ 
 

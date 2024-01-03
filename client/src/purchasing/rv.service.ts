@@ -1,6 +1,6 @@
 import { rv_default_approvers } from "../__temp__/data";
 import { supervisorLabel } from "../common";
-import { APPROVAL_STATUS, IApprover, IItem, IRV, IRVApproverDefault } from "../common/entities";
+import { APPROVAL_STATUS, IItem, IRV, IRVApprover, IRVApproverDefault, IRVItem } from "../common/entities";
 import { ICreateRVDto } from "./dto/rv.dto";
 import { faker } from '@faker-js/faker';
 // import moment from 'moment'
@@ -39,20 +39,35 @@ class RVService{
         item.supervisor_id = payload.data.supervisor.id
         item.supervisor = payload.data.supervisor
         item.is_cancelled = false
+        item.notes = payload.data.notes
+        item.purpose = payload.data.purpose
 
-        item.items = payload.data.items.map(i => {
+        const items = payload.data.items.map(i => {
+
+            const itemId = faker.string.uuid()
+
             const x = {} as IItem
             x.brand_id = i.brand ? i.brand.id : null
             x.brand = i.brand || null
-            x.rv_id = rvId
-            x.rv =  item
             x.description = i.description
-            x.id = faker.string.uuid()
+            x.id = itemId
             x.quantity = i.quantity
             x.unit_id = i.unit!.id
             x.unit = i.unit!
             return x
         }) 
+
+        const rvItems: IRVItem[] = []
+
+        items.forEach(i => {
+            rvItems.push({
+                id: faker.string.uuid(),
+                item_id: i.id,
+                item: i
+            })
+        })
+
+        item.items = rvItems
 
         const defaultApprovers: IRVApproverDefault[] = [...rv_default_approvers]
 
@@ -66,10 +81,9 @@ class RVService{
         defaultApprovers.unshift(approverSuperior)
 
         const approvers = defaultApprovers.map(i => {
-            const x = {} as IApprover 
+            const x = {} as IRVApprover 
             x.approver_id = i.approver_id
             x.approver = i.approver
-            // x.date_approval = this.today
             x.id = faker.string.uuid() 
             x.label = i.label 
             x.notes = ''
@@ -83,11 +97,7 @@ class RVService{
 
         item.approvers = approvers
         
-        // approvers.forEach(i => mock.approvers.push(i))
-        
         this.ctr ++ 
-
-        // RVs.unshift(item)
 
         return item
     }
