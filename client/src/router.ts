@@ -58,6 +58,12 @@ const routes = [
     },
 
     {
+        path: '/data-management/brand',
+        name: routeNames.data_management_brand,
+        component: () => import('./data-management/brand/Brand.vue'),
+    },
+
+    {
         path: '/data-management/brand/form',
         name: routeNames.data_management_brand_form,
         component: () => import('./data-management/brand/BrandForm.vue'),

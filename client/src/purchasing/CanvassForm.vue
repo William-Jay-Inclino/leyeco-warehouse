@@ -4,19 +4,12 @@
 
         <div class="row">
             <div class="col">
-                <h1 class="h3 mb-0 text-gray-800">Purchasing</h1>
-            </div>
-            </div>
-            <div class="row mb-4">
-            <div class="col">
-                <h2 class="h5 mb-0 text-gray-600">Canvass</h2>
+                <Breadcrumbs :items="breadcrumbItems"/>
             </div>
         </div>
 
-        <div class="row">
-            <div class="col">
-                <Breadcrumbs :items="breadcrumbItems"/>
-            </div>
+        <div class="mt-5">
+            <CanvassTitle/>
         </div>
 
         <div class="row justify-content-center mt-5">
@@ -83,6 +76,7 @@
 
 
 <script setup lang="ts">
+    import CanvassTitle from "./components/CanvassTitle.vue";
     import { onMounted, ref } from 'vue';
     import { onBeforeRouteLeave, useRouter } from 'vue-router';
     import Breadcrumbs from '../common/components/Breadcrumbs.vue'

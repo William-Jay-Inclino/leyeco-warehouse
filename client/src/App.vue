@@ -6,9 +6,7 @@
 			<SidebarDispatcher/>
 		</div>
 
-		<div
-		  id="content-wrapper"
-		  class="d-flex flex-column">
+		<div id="content-wrapper" class="d-flex flex-column" style="min-height: 100vh;">
 			<div class="content">
 				<Navbar/>
 

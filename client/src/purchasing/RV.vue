@@ -2,16 +2,7 @@
 
     <div class="container-fluid">
 
-        <div class="row">
-            <div class="col">
-                <h1 class="h3 mb-0 text-gray-800">Purchasing</h1>
-            </div>
-            </div>
-            <div class="row mb-4">
-            <div class="col">
-                <h2 class="h5 mb-0 text-gray-600">RV</h2>
-            </div>
-        </div>
+        <RVTitle />
 
         <div class="row justify-content-center">
             <div class="col-8">
@@ -97,6 +88,7 @@
 <script setup lang="ts">
 // import { useToast } from "vue-toastification";
 // import Swal from 'sweetalert2'
+import RVTitle from "./components/RVTitle.vue";
 import Search from './components/Search.vue'
 import TablePagination from './components/TablePagination.vue'
 import TablePerPage from './components/TableSelectPerPage.vue'

@@ -142,7 +142,7 @@
                     <router-link :to="{name: routeNames.purchasing_canvass}" class="collapse-item">
                         <span class="ml-2">Unit</span>
                     </router-link>
-                    <router-link :to="{name: routeNames.purchasing_canvass}" class="collapse-item">
+                    <router-link :to="{name: routeNames.data_management_brand}" class="collapse-item">
                         <span class="ml-2">Item Brand</span>
                     </router-link>
                     <router-link :to="{name: routeNames.purchasing_canvass}" class="collapse-item">

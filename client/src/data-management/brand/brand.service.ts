@@ -1,128 +1,116 @@
-import axios, { AxiosResponse } from 'axios';
+import { sendRequest } from '../../config/api';
+import { IBrand } from '../../common/entities';
+import { ICreateBrandDto, IUpdateBrandDto } from './dto/brand.dto';
 
-interface Brand {
-  id: string;
-  name: string;
-}
+export class BrandService {
 
-interface BrandInput {
-  name: string;
-}
+    private commonFieldsQuery: string = this.generateFieldsQuery(['id', 'name']);
 
-class BrandService {
-  private apiUrl: string;
-
-  constructor() {
-    this.apiUrl = 'http://localhost:3000/graphql';
-  }
-
-  private async sendRequest(queryOrMutation: string): Promise<AxiosResponse> {
-    try {
-      return await axios.post(
-        this.apiUrl,
-        { query: queryOrMutation },
-        { headers: { 'Content-Type': 'application/json' } }
-      );
-    } catch (error) {
-      console.error(error);
-      throw error;
+    private generateFieldsQuery(fields: string[]): string {
+        return fields.map(field => `${field}`).join('\n');
     }
-  }
 
-  async getAllBrands(): Promise<Brand[]> {
-    const query = `
-      query {
-        brands {
-          id
-          name
+    async findAll(): Promise<IBrand[]> {
+        const query = `
+            query {
+                brands {
+                    ${this.commonFieldsQuery}
+                }
+            }
+        `;
+
+        try {
+            const response = await sendRequest(query);
+            console.log('response', response)
+            return response.data.data.brands;
+        } catch (error) {
+            console.error(error);
+            throw error
         }
-      }
-    `;
-
-    try {
-      const response = await this.sendRequest(query);
-      return response.data.data.brands;
-    } catch (error) {
-      console.error(error);
-      throw error;
     }
-  }
 
-  async getBrandById(brandId: string): Promise<Brand> {
-    const query = `
-      query {
-        brand(id: "${brandId}") {
-          id
-          name
+    async findOne(brandId: string): Promise<IBrand | null> {
+        const query = `
+            query {
+                brand(id: "${brandId}") {
+                    ${this.commonFieldsQuery}
+                }
+            }
+        `;
+
+        try {
+            const response = await sendRequest(query);
+            console.log('response', response)
+            return response.data.data.brand;
+        } catch (error) {
+            console.error(error);
+            throw error;
         }
-      }
-    `;
-
-    try {
-      const response = await this.sendRequest(query);
-      return response.data.data.brand;
-    } catch (error) {
-      console.error(error);
-      throw error;
     }
-  }
 
-  async createBrand(name: string): Promise<Brand> {
-    const mutation = `
-      mutation {
-        createBrand(input: { name: "${name}" }) {
-          id
-          name
+    async create(data: ICreateBrandDto): Promise<IBrand | null> {
+        const inputFields = Object.keys(data)
+            .map(field => `${field}: "${data[field as keyof ICreateBrandDto]}"`)
+            .join(', ');
+        
+        console.log('inputFields', inputFields)
+
+        const mutation = `
+            mutation {
+                createBrand(data: { ${inputFields} }) {
+                    ${this.commonFieldsQuery}
+                }
+            }`;
+    
+        try {
+            const response = await sendRequest(mutation);
+            console.log('response', response);
+            return response.data.data.createBrand;
+        } catch (error) {
+            console.error(error);
+            throw error;
         }
-      }
-    `;
-
-    try {
-      const response = await this.sendRequest(mutation);
-      return response.data.data.createBrand;
-    } catch (error) {
-      console.error(error);
-      throw error;
     }
-  }
 
-  async updateBrand(brandId: string, newName: string): Promise<Brand> {
-    const mutation = `
-      mutation {
-        updateBrand(id: "${brandId}", input: { name: "${newName}" }) {
-          id
-          name
+    async update(brandId: string, data: IUpdateBrandDto): Promise<IBrand | null> {
+        const inputFields = Object.keys(data)
+            .map(field => `${field}: "${data[field as keyof IUpdateBrandDto]}"`)
+            .join(', ');
+
+        const mutation = `
+            mutation {
+                updateBrand(id: "${brandId}", data: { ${inputFields} }) {
+                    ${this.commonFieldsQuery}
+                }
+            }
+        `;
+
+        try {
+            const response = await sendRequest(mutation);
+            console.log('response', response)
+            return response.data.data.updateBrand;
+        } catch (error) {
+            console.error(error);
+            throw error;
         }
-      }
-    `;
-
-    try {
-      const response = await this.sendRequest(mutation);
-      return response.data.data.updateBrand;
-    } catch (error) {
-      console.error(error);
-      throw error;
     }
-  }
 
-  async deleteBrand(brandId: string): Promise<Brand> {
-    const mutation = `
-      mutation {
-        deleteBrand(id: "${brandId}") {
-          id
-          name
+    async remove(brandId: string): Promise<boolean> {
+        const mutation = `
+            mutation {
+                removeBrand(id: "${brandId}") 
+            }
+        `;
+
+        try {
+            const response = await sendRequest(mutation);
+            console.log('response', response)
+            return response.data.data.removeBrand;
+        } catch (error) {
+            console.error(error);
+            throw error;
         }
-      }
-    `;
-
-    try {
-      const response = await this.sendRequest(mutation);
-      return response.data.data.deleteBrand;
-    } catch (error) {
-      console.error(error);
-      throw error;
     }
-  }
 }
 
 export default BrandService;
