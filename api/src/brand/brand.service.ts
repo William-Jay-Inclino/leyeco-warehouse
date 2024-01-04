@@ -1,45 +1,74 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { CreateBrandInput } from './dto/create-brand.input';
 import { UpdateBrandInput } from './dto/update-brand.input';
 import { Brand } from './entities/brand.entity';
-import { faker } from '@faker-js/faker'
+import { PrismaService } from '../prisma/prisma.service';
+import { Logger } from '@nestjs/common';
 
 @Injectable()
 export class BrandService {
 
-  brands: Brand[] = []
+    private readonly logger = new Logger(BrandService.name);
 
-  async create(createBrandInput: CreateBrandInput): Promise<Brand> {
-    const brand = {
-      id: faker.string.uuid(),
-      name: createBrandInput.name
+    constructor(private readonly prisma: PrismaService) {}
+
+    async create(createBrandInput: CreateBrandInput): Promise<Brand> {
+
+        try {
+            
+            return await this.prisma.brand.create({
+                data: { ...createBrandInput }
+            })
+
+        } catch (error) {
+            this.logger.error(`Failed to create brand: ${error.message}`);
+            throw new InternalServerErrorException('Failed to create brand');
+        }
+        
     }
-    this.brands.push(brand)
-    return brand
-  }
 
-  async findAll(): Promise<Brand[]> {
-    return this.brands
-  }
+    async findAll(): Promise<Brand[]> {
 
-  async findOne(id: string): Promise<Brand> {
-    const brand = this.brands.find(i => i.id === id)
-    return brand
-  }
+        return await this.prisma.brand.findMany({
+            where: {
+                is_deleted: false
+            }
+        })
 
-  async update(id: string, updateBrandInput: UpdateBrandInput): Promise<Brand> {
-    
-    const brand = this.brands.find(i => i.id === id)
+    }
 
-    brand.name = updateBrandInput.name
+    async findOne(id: string): Promise<Brand> {
+        
+        return await this.prisma.brand.findUniqueOrThrow({
+            where: {id, is_deleted: false}
+        })
 
-    return brand
 
-  }
+    }
 
-  async remove(id: string): Promise<boolean> {
-    const indx = this.brands.findIndex(i => i.id === id)
-    this.brands.splice(indx, 1)
-    return true
-  }
+    async update(id: string, updateBrandInput: UpdateBrandInput): Promise<Brand> {
+        
+        await this.findOne(id)
+
+        return await this.prisma.brand.update( {
+            where: { id },
+            data: { ...updateBrandInput }
+        } )
+
+    }
+
+    async remove(id: string): Promise<boolean> {
+        
+        await this.findOne(id)
+        
+        await this.prisma.brand.update({
+            where: { id },
+            data: {
+                is_deleted: true
+            }
+        })
+
+        return true
+
+    }
 }
