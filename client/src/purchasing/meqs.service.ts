@@ -1,5 +1,5 @@
 import { faker } from "@faker-js/faker"
-import { APPROVAL_STATUS, IApprover, IItem, IMEQS, IMEQSApproverDefault, REQUEST_TYPES } from "../common/entities"
+import { APPROVAL_STATUS, IMEQSApprover, IMEQS, IMEQSApproverDefault } from "../common/entities"
 import { ICreateMEQSDto } from "./dto/meqs.dto"
 import { meqs_default_approvers } from "../__temp__/data"
 
@@ -33,40 +33,40 @@ class MEQSService{
         item.purpose = payload.data.purpose
         item.is_cancelled = false
 
-        if(payload.data.jo){
-            item.reference_type = REQUEST_TYPES.JO
-            item.jo = payload.data.jo
-        }else if(payload.data.rv){
-            item.reference_type = REQUEST_TYPES.RV
-            item.rv = payload.data.rv
-        }else if(payload.data.spr) {
-            item.reference_type = REQUEST_TYPES.SPR
-            item.spr = payload.data.spr
-        }else{
-            console.error('Undefined jo/rv/spr')
-            return null
-        }
+        // if(payload.data.jo){
+        //     item.reference_type = REQUEST_TYPES.JO
+        //     item.jo = payload.data.jo
+        // }else if(payload.data.rv){
+        //     item.reference_type = REQUEST_TYPES.RV
+        //     item.rv = payload.data.rv
+        // }else if(payload.data.spr) {
+        //     item.reference_type = REQUEST_TYPES.SPR
+        //     item.spr = payload.data.spr
+        // }else{
+        //     console.error('Undefined jo/rv/spr')
+        //     return null
+        // }
 
-        item.items = payload.data.items.map(i => {
-            const x = {} as IItem
-            x.brand_id = i.brand ? i.brand.id : null
-            x.brand = i.brand || null
-            x.meqs_id = meqsId
-            x.meqs =  item
-            x.description = i.description
-            x.id = faker.string.uuid()
-            x.quantity = i.quantity
-            x.unit_id = i.unit!.id
-            x.unit = i.unit!
-            x.supplier_items = i.supplier_items
-            return x
-        }) 
+        // item.items = payload.data.items.map(i => {
+        //     const x = {} as IItem
+        //     x.brand_id = i.brand ? i.brand.id : null
+        //     x.brand = i.brand || null
+        //     x.meqs_id = meqsId
+        //     x.meqs =  item
+        //     x.description = i.description
+        //     x.id = faker.string.uuid()
+        //     x.quantity = i.quantity
+        //     x.unit_id = i.unit!.id
+        //     x.unit = i.unit!
+        //     x.supplier_items = i.supplier_items
+        //     return x
+        // }) 
 
         const defaultApprovers: IMEQSApproverDefault[] = [...meqs_default_approvers]
 
 
         const approvers = defaultApprovers.map(i => {
-            const x = {} as IApprover 
+            const x = {} as IMEQSApprover 
             x.approver_id = i.approver_id
             x.approver = i.approver
             x.id = faker.string.uuid() 

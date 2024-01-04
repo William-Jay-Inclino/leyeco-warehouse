@@ -49,14 +49,14 @@
 </template>
 
 <script setup lang="ts">
-    import { IApprover } from '../../common/entities';
+    import { IJOApprover, IRVApprover, ISPRApprover, IMEQSApprover } from '../../common/entities';
     import { getFullname } from '../../common';
     import { approvalStatus } from '../../common/constants'
     import moment from 'moment';
 
 
     defineProps<{
-        approvers: IApprover[]
+        approvers: IJOApprover[] | IRVApprover[] | ISPRApprover[] | IMEQSApprover[] 
     }>()
 
 </script>

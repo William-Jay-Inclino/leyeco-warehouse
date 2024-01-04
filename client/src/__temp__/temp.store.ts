@@ -1,6 +1,6 @@
 
 import { defineStore } from 'pinia'
-import { IApprover, IBrand, ICanvass, IClassification, IDepartment, IDivision, IEmployee, IItem, IJO, IJOApproverDefault, IMEQS, IMEQSApproverDefault, IPO, IPOApproverDefault, IPOItems, IRV, ISPR, ISPRApproverDefault, ISupplier, IUnit } from '../common/entities';
+import { IBrand, ICanvass, IClassification, IDepartment, IDivision, IEmployee, IJO, IJOApproverDefault, IMEQS, IMEQSApproverDefault, IPO, IPOApproverDefault, IRV, ISPR, ISPRApproverDefault, ISupplier, IUnit } from '../common/entities';
 import { ref } from 'vue';
 import * as mock from './data';
 
@@ -21,19 +21,18 @@ export const tempStore = defineStore('temp', () => {
     const SPRs = ref<ISPR[]>(mock.SPRs)
     const MEQSs = ref<IMEQS[]>(mock.MEQSs)
     const POs = ref<IPO[]>(mock.POs)
-    const POItems = ref<IPOItems[]>(mock.POItems)
+    // const POItems = ref<IPOItems[]>(mock.POItems)
 
-    const approvers = ref<IApprover[]>(mock.approvers)
+    // const approvers = ref<IApprover[]>(mock.approvers)
     const joApprovers = ref<IJOApproverDefault[]>(mock.jo_default_approvers)
     const rvApprovers = ref<IPOApproverDefault[]>(mock.rv_default_approvers)
     const sprApprovers = ref<ISPRApproverDefault[]>(mock.spr_default_approvers)
     const meqsApprovers = ref<IMEQSApproverDefault[]>(mock.meqs_default_approvers)
     const poApprovers = ref<IPOApproverDefault[]>(mock.po_default_approvers)
-    const items = ref<IItem[]>(mock.items)
 
-    const saveApprovers = (items: IApprover[]) => {
-        items.forEach(i => approvers.value.push(i))
-    }
+    // const saveApprovers = (items: IApprover[]) => {
+    //     items.forEach(i => approvers.value.push(i))
+    // }
 
     const saveRv = (item: IRV) => {
         RVs.value.push(item)
@@ -43,9 +42,9 @@ export const tempStore = defineStore('temp', () => {
         canvasses.value.push(item)
     }
 
-    const saveItems = (_items: IItem[]) => {
-        _items.forEach(i => items.value.push(i))
-    }
+    // const saveItems = (_items: IItem[]) => {
+    //     _items.forEach(i => items.value.push(i))
+    // }
 
     return {
         suppliers,
@@ -56,7 +55,7 @@ export const tempStore = defineStore('temp', () => {
         brands,
         employees,
         canvasses,
-        approvers,
+        // approvers,
         joApprovers,
         rvApprovers,
         sprApprovers,
@@ -67,13 +66,13 @@ export const tempStore = defineStore('temp', () => {
         SPRs,
         MEQSs,
         POs,
-        POItems,
-        items,
+        // POItems,
+        // items,
 
-        saveApprovers,
+        // saveApprovers,
         saveRv,
         saveCanvass,
-        saveItems,
+        // saveItems,
     }
 })
 

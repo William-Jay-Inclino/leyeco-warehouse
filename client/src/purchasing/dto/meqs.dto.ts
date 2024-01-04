@@ -1,5 +1,5 @@
 import { IITemDto } from "../../common/dto/IItem.dto"
-import { IApprover, IJO, IRV, ISPR, REQUEST_TYPES } from "../../common/entities"
+import { IJO, IMEQSApprover, IRV, ISPR, REQUEST_TYPES } from "../../common/entities"
 
 export interface IFormData{
     id?: string
@@ -11,7 +11,7 @@ export interface IFormData{
     meqs_number: string
     purpose: string
     items: IITemDto[]
-    approvers: IApprover[]
+    approvers: IMEQSApprover[]
 }
 
 export interface ICreateMEQSDto {

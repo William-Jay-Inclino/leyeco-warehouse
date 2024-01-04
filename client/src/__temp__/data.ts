@@ -1,5 +1,5 @@
 import { faker } from '@faker-js/faker';
-import { DEPARTMENT_STATUS, DIVISION_STATUS, EMPLOYEE_POSITION, IBrand, ICanvass, ICanvassItem, IClassification, IDepartment, IDivision, IEmployee, IItem, IJO, IJOApprover, IJOApproverDefault, IMEQS, IMEQSApproverDefault, IPO, IPOApproverDefault, IRV, IRVApproverDefault, ISPR, ISPRApproverDefault, ISupplier, IUnit } from '../common/entities';
+import { DEPARTMENT_STATUS, DIVISION_STATUS, EMPLOYEE_POSITION, IBrand, ICanvass, ICanvassItem, IClassification, IDepartment, IDivision, IEmployee, IJO, IJOApprover, IJOApproverDefault, IMEQS, IMEQSApproverDefault, IPO, IPOApproverDefault, IRV, IRVApproverDefault, ISPR, ISPRApproverDefault, ISupplier, IUnit } from '../common/entities';
 
 export const suppliers: ISupplier[] = [
     { 

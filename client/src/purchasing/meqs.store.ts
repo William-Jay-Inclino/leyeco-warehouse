@@ -3,7 +3,7 @@
 import { defineStore } from 'pinia'
 import { ICreateMEQSDto, IFormData, IUpdateMEQSDto } from './dto/meqs.dto'
 import { computed, ref } from 'vue'
-import { APPROVAL_STATUS, IApprover, IBrand, ICanvass, IEmployee, IMEQS, IStatusObject, IUnit } from '../common/entities'
+import { APPROVAL_STATUS, IMEQSApprover, IBrand, ICanvass, IEmployee, IMEQS, IStatusObject, IUnit } from '../common/entities'
 import moment from 'moment'
 import { approvalStatus, convertMiddleNameToInitial } from '../common'
 import { meqsService } from './meqs.service'
@@ -45,7 +45,7 @@ export const meqsStore = defineStore('meqs', () => {
     const _brands = ref<IBrand[]>([])
     const _employees = ref<IEmployee[]>([])
     const _canvasses = ref<ICanvass[]>([])
-    const _approvers = ref<IApprover[]>([])
+    const _approvers = ref<IMEQSApprover[]>([])
 
     // getters 
     const items = computed( () => {
@@ -104,28 +104,28 @@ export const meqsStore = defineStore('meqs', () => {
     const setFormData = (payload: {data: IMEQS}) => {
         console.log(_store + 'setFormData()', payload)
 
-        const items = payload.data.items.map(i => {
-            const x = {} as IITemDto
-            x.brand = i.brand
-            x.description = i.description
-            x.id = i.id
-            x.quantity = i.quantity
-            x.unit = i.unit
-            return x
-        }) 
+        // const items = payload.data.items.map(i => {
+        //     const x = {} as IITemDto
+        //     x.brand = i.brand
+        //     x.description = i.description
+        //     x.id = i.id
+        //     x.quantity = i.quantity
+        //     x.unit = i.unit
+        //     return x
+        // }) 
 
-        formData.value = {
-            id: payload.data.id,
-            jo: payload.data.jo,
-            rv: payload.data.rv,
-            spr: payload.data.spr,
-            reference_type: payload.data.reference_type,
-            meqs_date: payload.data.meqs_date,
-            meqs_number: payload.data.meqs_number,
-            items: payload.data.items,
-            approvers: payload.data.approvers,
-            purpose: payload.data.purpose,
-        }
+        // formData.value = {
+        //     id: payload.data.id,
+        //     jo: payload.data.jo,
+        //     rv: payload.data.rv,
+        //     spr: payload.data.spr,
+        //     reference_type: payload.data.reference_type,
+        //     meqs_date: payload.data.meqs_date,
+        //     meqs_number: payload.data.meqs_number,
+        //     items: payload.data.items,
+        //     approvers: payload.data.approvers,
+        //     purpose: payload.data.purpose,
+        // }
     }
 
     // // methods
