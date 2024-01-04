@@ -57,6 +57,12 @@ const routes = [
         component: () => import('./purchasing/MEQSFORM.vue'),
     },
 
+    {
+        path: '/data-management/brand/form',
+        name: routeNames.data_management_brand_form,
+        component: () => import('./data-management/brand/BrandForm.vue'),
+    },
+
 ]
 
 

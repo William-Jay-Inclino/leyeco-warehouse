@@ -10,6 +10,7 @@ export const routeNames = {
     purchasing_rv_form: 'purchasing_rv_form.route',
     purchasing_meqs: 'purchasing_meqs.route',
     purchasing_meqs_form: 'purchasing_meqs_form.route',
+    data_management_brand_form: 'data_management_brand_form.route',
 }
 
 export const supervisorLabel = 'Imd. Sup.'
